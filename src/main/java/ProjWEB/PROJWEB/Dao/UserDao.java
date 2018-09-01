@@ -11,6 +11,7 @@ import java.util.List;
 import com.mysql.jdbc.PreparedStatement;
 
 import ProjWEB.PROJWEB.Domain.User;
+import ProjWEB.PROJWEB.Domain.Dto.UserLoginDto;
 
 
 public class UserDao {
@@ -29,7 +30,7 @@ public class UserDao {
 		}
 	}
 	
-	public ArrayList<User> selectAllUsers() throws SQLException {
+	public ArrayList<User> findAll() throws SQLException {
 		ArrayList<User> list = new ArrayList<>();
 		loadDB();
 		String sql = "SELECT * FROM webProjDB.User;";
@@ -38,7 +39,6 @@ public class UserDao {
 			ResultSetMetaData rsmd = rs.getMetaData();
 			int columnsNumber = rsmd.getColumnCount();
 			while(rs.next()) {
-//				ISPIS U KONZOLU
 				for (int i = 1; i <= columnsNumber; i++) {
 			        if (i > 1) System.out.print(",  ");
 			        String columnValue = rs.getString(i);
@@ -54,13 +54,14 @@ public class UserDao {
 				int weekly = rs.getInt("weekly");
 				long companyId = Long.parseLong(rs.getString("companyId"));
 				int deleted = Integer.parseInt(rs.getString("deleted"));
+				int rate = Integer.parseInt(rs.getString("rate"));
 				
-				User user = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted);
+				User user = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted,rate);
 				list.add(user);
 				System.out.println();
 			}
 		}catch(SQLException ex) {
-			System.out.println("SQL Error");
+			System.out.println("SQL ERROR::FIND-ALL");
 		}finally {
 			rs.close();
 			st.close();
@@ -68,22 +69,23 @@ public class UserDao {
 		}
 		return list;
 	}
-	public long addUser(User user) throws SQLException {
+	public long save(User user) throws SQLException {
 		loadDB();
 		int res = 0;
 		String sql ="";
         try {
             con.setAutoCommit(false);
             System.out.println(user);
-            sql = "insert into User (username, password, email, country, role, daily, weekly,companyId,deleted)"
+            sql = "insert into User (username, password, email, country, role, daily, weekly,companyId,deleted,rate)"
                     + "values ('" + user.getUsername() + "','" + user.getPassword() + "','" + user.getEmail() + "','" +
-            		user.getCountry() + "',"+user.getRole()+ ",'"+ String.valueOf(user.getDaily()) + "','"+String.valueOf(user.getWeekly())+"',"+user.getCompanyId()+","+user.getDeleted()+")";
+            		user.getCountry() + "',"+user.getRole()+ ",'"+ String.valueOf(user.getDaily()) + "','"+String.valueOf(user.getWeekly())+"',"+user.getCompanyId()+","+user.getDeleted()+",0)";
             res = st.executeUpdate(sql);
             // If there is no error.
             con.commit();
         } catch (SQLException ex) {
             ex.printStackTrace();
             //if have any error
+            System.out.println("SQL ERROR::SAVE-USER:");
             con.rollback();
         }
         st.close();
@@ -96,17 +98,13 @@ public class UserDao {
         	id = resultSet.getInt("id");
         	System.out.println("USER ID:"+id);
         }else {
-        	System.out.println("ERROR:LAST_INSERT_ID()");
+        	System.out.println("SQL ERROR:LAST_INSERT_ID()");
         }
         con.close();
         return id;
-//        } finally {
-//            st.close();
-//            con.close();
-//        }
 	}
 	
-	public User getUserForUsername(String username) throws SQLException {
+	public User findUserByUsername(String username) throws SQLException {
 		loadDB();
 		User user = null;
 		String sql = "SELECT * FROM webProjDB.User WHERE username ='"+username+"';";
@@ -123,11 +121,12 @@ public class UserDao {
 				int weekly = rs.getInt("weekly");
 				long companyId = Long.parseLong(rs.getString("companyId"));
 				int deleted = Integer.parseInt(rs.getString("deleted"));
+                int rate = Integer.parseInt(rs.getString("rate"));
 				
-				 user = new User(userId,nusername,password,role,email,country,daily,weekly,companyId,deleted);
+				user = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted,rate);
 			}
 		}catch(SQLException ex) {
-			System.out.println("SQL Error");
+			System.out.println("SQL ERROR::");
 		}finally {
 			rs.close();
 			st.close();
@@ -136,37 +135,39 @@ public class UserDao {
 		return user;
 	}
 
-//	public User checkForLogin(UserDto user) throws SQLException {
-//		loadDB();
-//		User u = null;
-//		String sql = "SELECT * FROM webProjDB.User\n" + 
-//				"WHERE username='"+user.getUsername()+"' AND password='"+user.getPassword()+"';";
-//		try {
-//			rs = st.executeQuery(sql);
-//			if(rs.next()) {
-//				long userId = Long.parseLong(rs.getString("id"));
-//				String nusername = rs.getString("username");
-//				String password = rs.getString("password");
-//				String email = rs.getString("email");
-//				String country = rs.getString("country");
-//				int role = Integer.parseInt(rs.getString("role"));
-//				int daily = rs.getInt("daily");
-//				int weekly = rs.getInt("weekly");
-//				long companyId = Long.parseLong(rs.getString("companyId"));
-//				int deleted = Integer.parseInt(rs.getString("deleted"));
-//				
-//				 u = new User(userId,nusername,password,role,email,country,daily,weekly,companyId,deleted);
-//			}
-//		}catch(SQLException ex) {
-//			System.out.println("SQL Error");
-//		}finally {
-//			rs.close();
-//			st.close();
-//			con.close();
-//		}
-//		return u;
-//	}
-	public ArrayList<User> getUsersByRole(String Userrole) throws SQLException {
+	public User login(UserLoginDto user) throws SQLException {
+		loadDB();
+		User u = null;
+		String sql = "SELECT * FROM webProjDB.User\n" + 
+				"WHERE username='"+user.getUsername()+"' AND password='"+user.getPassword()+"';";
+		try {
+			rs = st.executeQuery(sql);
+			if(rs.next()) {
+				long userId = Long.parseLong(rs.getString("id"));
+				String nusername = rs.getString("username");
+				String password = rs.getString("password");
+				String email = rs.getString("email");
+				String country = rs.getString("country");
+				int role = Integer.parseInt(rs.getString("role"));
+				int daily = rs.getInt("daily");
+				int weekly = rs.getInt("weekly");
+				long companyId = Long.parseLong(rs.getString("companyId"));
+				int deleted = Integer.parseInt(rs.getString("deleted"));
+				int rate = Integer.parseInt(rs.getString("rate"));
+
+				
+				 u = new User(userId,nusername,password,role,email,country,daily,weekly,companyId,deleted,rate);
+			}
+		}catch(SQLException ex) {
+			System.out.println("SQL Error");
+		}finally {
+			rs.close();
+			st.close();
+			con.close();
+		}
+		return u;
+	}
+	public ArrayList<User> findUsersByRole(String Userrole) throws SQLException {
 		ArrayList<User> list = new ArrayList<>();
 		loadDB();
 		String sql = "SELECT * FROM webProjDB.User\n" + 
@@ -176,7 +177,6 @@ public class UserDao {
 			ResultSetMetaData rsmd = rs.getMetaData();
 			int columnsNumber = rsmd.getColumnCount();
 			while(rs.next()) {
-//				ISPIS U KONZOLU
 				for (int i = 1; i <= columnsNumber; i++) {
 			        if (i > 1) System.out.print(",  ");
 			        String columnValue = rs.getString(i);
@@ -192,13 +192,14 @@ public class UserDao {
 				int weekly = rs.getInt("weekly");
 				long companyId = Long.parseLong(rs.getString("companyId"));
 				int deleted = Integer.parseInt(rs.getString("deleted"));
+                int rate = Integer.parseInt(rs.getString("rate"));
 				
-				User user = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted);
+				User user = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted,rate);
 				list.add(user);
 				System.out.println();
 			}
 		}catch(SQLException ex) {
-			System.out.println("SQL Error");
+			System.out.println("SQL ERROR::");
 		}finally {
 			rs.close();
 			st.close();
@@ -207,29 +208,29 @@ public class UserDao {
 		return list;
 	}
 
-	public boolean deleteUser(int id) throws SQLException {
+	public int delete(int id) throws SQLException {
 		loadDB();
 		String sql = "DELETE FROM webProjDB.User\n" + 
 				"WHERE id='"+id+"';";
+		int columnsNumber =0;
 		try {
 			rs = st.executeQuery(sql);
 			ResultSetMetaData rsmd = rs.getMetaData();
-			int columnsNumber = rsmd.getColumnCount();
+			columnsNumber = rsmd.getColumnCount();
 			//boolean response = rs.next();
 			System.out.println("-----"+rs.next());
 		}catch(SQLException ex) {
-			System.out.println("SQL Error");
+			System.out.println("SQL ERROR::");
 		}finally {
 			rs.close();
 			st.close();
 			con.close();
 		}
-		return true;
+		return columnsNumber;
 	}
 	
-	public User editUser(User user) throws SQLException {
+	public User update(User user) throws SQLException {
 		loadDB();
-		//User u = new User();
 		int res = 0;
 		String sql = "UPDATE webProjDB.user " + 
 				"SET username='"+user.getUsername()+"',password='"+user.getPassword()+"',email='"+user.getEmail()+"',"+
@@ -238,17 +239,13 @@ public class UserDao {
 		System.out.println(sql);
 		try {
 			res = st.executeUpdate(sql);
-			//System.out.println("---"+rs.getMetaData());
 		}catch(SQLException ex) {
-			System.out.println("SQL Error");
+			System.out.println("SQL ERROR::");
 		}finally {
 			rs.close();
 			st.close();
 			con.close();
 		}
-//		if(res == 0) {
-//			return u;
-//		}
 		return user;
 	}
 	
@@ -263,7 +260,6 @@ public class UserDao {
 			ResultSetMetaData rsmd = rs.getMetaData();
 			int columnsNumber = rsmd.getColumnCount();
 			while(rs.next()) {
-//				ISPIS U KONZOLU
 				for (int i = 1; i <= columnsNumber; i++) {
 			        if (i > 1) System.out.print(",  ");
 			        String columnValue = rs.getString(i);
@@ -279,13 +275,14 @@ public class UserDao {
 				int weekly = rs.getInt("weekly");
 				long companyId = Long.parseLong(rs.getString("companyId"));
 				int deleted = Integer.parseInt(rs.getString("deleted"));
+                int rate = Integer.parseInt(rs.getString("rate"));
 				
-				 user = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted);
+				user = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted,rate);
 			 System.out.println("+++"+user);	
 			 list.add(user);
 			}
 		}catch(SQLException ex) {
-			System.out.println("SQL Error");
+			System.out.println("SQL ERROR::");
 		}finally {
 			rs.close();
 			st.close();
@@ -342,7 +339,6 @@ public class UserDao {
 			ResultSetMetaData rsmd = rs.getMetaData();
 			int columnsNumber = rsmd.getColumnCount();
 			while(rs.next()) {
-//				ISPIS U KONZOLU
 				for (int i = 1; i <= columnsNumber; i++) {
 			        if (i > 1) System.out.print(",  ");
 			        String columnValue = rs.getString(i);
@@ -357,13 +353,15 @@ public class UserDao {
 				int daily = rs.getInt("daily");
 				int weekly = rs.getInt("weekly");
 				int deleted = Integer.parseInt(rs.getString("deleted"));
+                int rate = Integer.parseInt(rs.getString("rate"));
 				
-				 u = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted);
+				u = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted,rate);
 				
 				System.out.println();
 			}
 		}catch(SQLException ex) {
 			ex.printStackTrace();
+			System.out.println("SQL ERROR::");
 		}finally {
 			rs.close();
 			st.close();
@@ -382,7 +380,6 @@ public class UserDao {
 			ResultSetMetaData rsmd = rs.getMetaData();
 			int columnsNumber = rsmd.getColumnCount();
 			while(rs.next()) {
-//				ISPIS U KONZOLU
 				for (int i = 1; i <= columnsNumber; i++) {
 			        if (i > 1) System.out.print(",  ");
 			        String columnValue = rs.getString(i);
@@ -398,13 +395,15 @@ public class UserDao {
 				int daily = rs.getInt("daily");
 				int weekly = rs.getInt("weekly");
 				int deleted = Integer.parseInt(rs.getString("deleted"));
+                int rate = Integer.parseInt(rs.getString("rate"));
 				
-				u = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted);
+				u = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted,rate);
 				users.add(u);
 				System.out.println();
 			}
 		}catch(SQLException ex) {
 			ex.printStackTrace();
+			System.out.println("SQL ERROR::");
 		}finally {
 			rs.close();
 			st.close();
@@ -423,7 +422,6 @@ public class UserDao {
 			ResultSetMetaData rsmd = rs.getMetaData();
 			int columnsNumber = rsmd.getColumnCount();
 			while(rs.next()) {
-//				ISPIS U KONZOLU
 				for (int i = 1; i <= columnsNumber; i++) {
 			        if (i > 1) System.out.print(",  ");
 			        String columnValue = rs.getString(i);
@@ -438,14 +436,17 @@ public class UserDao {
 				String country = rs.getString("country");
 				int daily = rs.getInt("daily");
 				int weekly = rs.getInt("weekly");
+				long companyId = Long.parseLong(rs.getString("companyId"));
 				int deleted = Integer.parseInt(rs.getString("deleted"));
+                int rate = Integer.parseInt(rs.getString("rate"));
 				
-				u = new User(userId,username,password,role,email,country,daily,weekly,0,deleted);
+				u = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted,rate);
 				users.add(u);
 				System.out.println();
 			}
 		}catch(SQLException ex) {
 			ex.printStackTrace();
+			System.out.println("SQL ERROR::");
 		}finally {
 			rs.close();
 			st.close();

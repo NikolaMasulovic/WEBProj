@@ -1,9 +1,11 @@
-package ProjWEB.PROJWEB.Service.Impl;
+package ProjWEB.PROJWEB.Service;
 
 import java.sql.SQLException;
 import java.util.List;
 
 import ProjWEB.PROJWEB.Domain.User;
+import ProjWEB.PROJWEB.Domain.Dto.UserLoginDto;
+import ProjWEB.PROJWEB.Domain.Dto.UserLoginResponse;
 
 
 
@@ -19,7 +21,7 @@ public interface UserService {
 	
 	public User addUser(User user);
 
-	//public UserResponseDto login(UserDto user);
+	public UserLoginResponse login(UserLoginDto user) throws SQLException ;
 	
 	public List<User> getUsersByRole(String role);
 	
