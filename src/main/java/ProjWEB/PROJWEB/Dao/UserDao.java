@@ -11,6 +11,7 @@ import java.util.List;
 import com.mysql.jdbc.PreparedStatement;
 
 import ProjWEB.PROJWEB.Domain.User;
+import ProjWEB.PROJWEB.Domain.Dto.UserChangePasswordDto;
 import ProjWEB.PROJWEB.Domain.Dto.UserLoginDto;
 
 
@@ -159,7 +160,7 @@ public class UserDao {
 				 u = new User(userId,nusername,password,role,email,country,daily,weekly,companyId,deleted,rate);
 			}
 		}catch(SQLException ex) {
-			System.out.println("SQL Error");
+			System.out.println("SQL ERROR::LOGIN");
 		}finally {
 			rs.close();
 			st.close();
@@ -291,23 +292,23 @@ public class UserDao {
 		return list;
 	}
 	
-//	public int changePassword(ChangePasswordDto user) throws SQLException {
-//		loadDB();
-//		String sql ="update webProjDB.user set password ='"+user.getNewPassword()+"' where id = "+user.getId()+";";
-//		System.out.println(sql);
-//		int res =0;
-//		try {
-//			res = st.executeUpdate(sql);
-//			System.out.println("++++"+res);
-//		}catch(SQLException ex) {
-//			ex.printStackTrace();
-//		}finally {
-//			//rs.close();
-//			st.close();
-//			con.close();
-//		}
-//		return res;
-//	}
+	public int changePassword(UserChangePasswordDto user) throws SQLException {
+		loadDB();
+		String sql ="update webProjDB.user set password ='"+user.getNewPassword()+"' where id = "+user.getUserId()+";";
+		System.out.println(sql);
+		int res =0;
+		try {
+			res = st.executeUpdate(sql);
+			System.out.println("++++"+res);
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}finally {
+			//rs.close();
+			st.close();
+			con.close();
+		}
+		return res;
+	}
 	
 //	public User getLastUpdated() throws SQLException {
 //		

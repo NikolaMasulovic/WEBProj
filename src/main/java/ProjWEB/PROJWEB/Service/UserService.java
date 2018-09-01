@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import ProjWEB.PROJWEB.Domain.User;
+import ProjWEB.PROJWEB.Domain.Dto.UserChangePasswordDto;
 import ProjWEB.PROJWEB.Domain.Dto.UserLoginDto;
 import ProjWEB.PROJWEB.Domain.Dto.UserLoginResponse;
 
@@ -29,7 +30,7 @@ public interface UserService {
 	
 	public User editUser(User user);
 	
-	//public int changePassword(ChangePasswordDto dto);
+	public int changePassword(UserChangePasswordDto dto) throws SQLException ;
 	
 	public String approveCompany(long companyId) throws SQLException ;
 	

@@ -3,6 +3,7 @@ package ProjWEB.PROJWEB.Api;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.mail.MessagingException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -11,8 +12,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import ProjWEB.PROJWEB.Domain.User;
+import ProjWEB.PROJWEB.Domain.Dto.UserChangePasswordDto;
 import ProjWEB.PROJWEB.Domain.Dto.UserLoginDto;
 import ProjWEB.PROJWEB.Domain.Dto.UserLoginResponse;
+import ProjWEB.PROJWEB.Service.MailService;
 import ProjWEB.PROJWEB.Service.UserService;
 import ProjWEB.PROJWEB.Service.Impl.UserServiceImpl;
 
@@ -22,10 +25,12 @@ import ProjWEB.PROJWEB.Service.Impl.UserServiceImpl;
 public class UserApi {
 	
 	private UserService userService = new UserServiceImpl();
+	private MailService mailService = new MailService();
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<User> getUsers() throws SQLException {
+	public List<User> getUsers() throws SQLException, MessagingException {
+		mailService.sendWithAttachment("nikola.masulovic@netcast.rs", "Proba");
 		return userService.getAllUsers();
 	}
 	
@@ -45,6 +50,13 @@ public class UserApi {
 	public long register(User u) throws SQLException {
 		System.out.println("REGISTER::");
 		return userService.register(u);
+	}
+	
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/changePassword")
+	public int changePassword(UserChangePasswordDto changeDto) throws SQLException {
+		return userService.changePassword(changeDto);
 	}
 
 }

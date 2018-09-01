@@ -5,6 +5,7 @@ import java.util.List;
 
 import ProjWEB.PROJWEB.Dao.UserDao;
 import ProjWEB.PROJWEB.Domain.User;
+import ProjWEB.PROJWEB.Domain.Dto.UserChangePasswordDto;
 import ProjWEB.PROJWEB.Domain.Dto.UserLoginDto;
 import ProjWEB.PROJWEB.Domain.Dto.UserLoginResponse;
 import ProjWEB.PROJWEB.Service.UserService;
@@ -89,6 +90,11 @@ public class UserServiceImpl implements UserService{
 		User u = userDao.login(user);
 		userResponse.setUser(u);
 		return userResponse;
+	}
+
+	@Override
+	public int changePassword(UserChangePasswordDto dto) throws SQLException {
+		return userDao.changePassword(dto);
 	}
 
 }
