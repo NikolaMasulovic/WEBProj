@@ -37,9 +37,8 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public User addUser(User user) {
-		// TODO Auto-generated method stub
-		return null;
+	public long register(User user) throws SQLException {
+		return userDao.save(user);
 	}
 
 	@Override

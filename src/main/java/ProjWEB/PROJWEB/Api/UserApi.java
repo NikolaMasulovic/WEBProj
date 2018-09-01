@@ -42,8 +42,9 @@ public class UserApi {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/register")
-	public User addUser(User u) {
-		return userService.addUser(u);
+	public long register(User u) throws SQLException {
+		System.out.println("REGISTER::");
+		return userService.register(u);
 	}
 
 }

@@ -19,7 +19,7 @@ public interface UserService {
 	
 	public void deleteUser(long id);
 	
-	public User addUser(User user);
+	public long register(User user) throws SQLException ;
 
 	public UserLoginResponse login(UserLoginDto user) throws SQLException ;
 	
