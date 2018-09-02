@@ -41,5 +41,7 @@ public interface UserService {
 	public boolean becomeSeller(long userId) throws SQLException ;
 	
 	public boolean userSendTest(long userId) throws SQLException ;
+	
+	public boolean adminAddOperater(long userId) throws SQLException ;
 
 }

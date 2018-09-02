@@ -73,12 +73,11 @@ public class UserApi {
 	public boolean becomeSeller(@PathParam("userId") long userId) throws SQLException {
 		return userService.becomeSeller(userId);
 	}
-	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/sendTest/{userId}")
-	public boolean sendTest(@PathParam("userId") long userId) throws SQLException {
-		return userService.userSendTest(userId);
+	@Path("/addOperater/{userId}")
+	public boolean addOperater(@PathParam("userId") long userId) throws SQLException {
+		return userService.adminAddOperater(userId);
 	}
 	
 	@POST

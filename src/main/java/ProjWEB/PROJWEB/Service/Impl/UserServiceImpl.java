@@ -101,4 +101,11 @@ public class UserServiceImpl implements UserService{
 		return queryResult;
 	}
 
+	@Override
+	public boolean adminAddOperater(long userId) throws SQLException {
+		boolean queryResult = false;
+		if(userDao.becomeSeller(userId, 1) > 0) queryResult = true;
+		return queryResult;
+	}
+
 }

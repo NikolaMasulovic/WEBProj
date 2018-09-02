@@ -262,6 +262,7 @@ public class UserDao {
 	/*
 	 * Ako mu se prosledi rola 10 znaci da je samo poslao test ali jos nije approve znaci ceka da bude approve i prodavac,
 	 * ako mu se prosledi rola 3 test mu je approved i stvarno je postao prodavac
+	 * ako se prosledi rola 1 znaci da je Admin dodao novog operatera
 	 */
 	public int becomeSeller(long userId,int role) throws SQLException {
 		loadDB();
