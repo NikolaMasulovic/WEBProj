@@ -11,6 +11,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import ProjWEB.PROJWEB.Domain.User;
 import ProjWEB.PROJWEB.Domain.Dto.UserChangePasswordDto;
@@ -48,9 +49,9 @@ public class UserApi {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/register")
-	public long register(User u) throws SQLException {
+	public Response register(User u) throws SQLException {
 		System.out.println("REGISTER::");
-		return userService.register(u);
+		return Response.status(200).type("text/plain").entity(userService.register(u)).build();
 	}
 	
 	@POST
@@ -65,6 +66,26 @@ public class UserApi {
 	@Path("/delete/{userId}")
 	public boolean delete(@PathParam("userId") long userId) throws SQLException {
 		return userService.deleteUser(userId);
+	}
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/becomeSeller/{userId}")
+	public boolean becomeSeller(@PathParam("userId") long userId) throws SQLException {
+		return userService.becomeSeller(userId);
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/sendTest/{userId}")
+	public boolean sendTest(@PathParam("userId") long userId) throws SQLException {
+		return userService.userSendTest(userId);
+	}
+	
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/updatePaymentCard")
+	public User updatePaymentCard(User user) throws SQLException {
+		return userService.editUser(user);
 	}
 
 }

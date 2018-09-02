@@ -112,7 +112,7 @@ public class User {
 		this.version = version;
 	}
 	public User(long id, String username, String password, int role, String email, String country, int daily,
-			int weekly,long companyId,int deleted,int rate,int version) {
+			int weekly,String kartica,long companyId,int deleted,int rate,int version) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -122,6 +122,7 @@ public class User {
 		this.country = country;
 		this.daily = daily;
 		this.weekly = weekly;
+		this.kartica = kartica;
 		this.companyId = companyId;
 		this.deleted = deleted;
 		this.rate = rate;

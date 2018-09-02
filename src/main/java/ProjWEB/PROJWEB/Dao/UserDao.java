@@ -53,12 +53,13 @@ public class UserDao {
 				String country = rs.getString("country");
 				int daily = rs.getInt("daily");
 				int weekly = rs.getInt("weekly");
+				String kartica = rs.getString("kartica");
 				long companyId = Long.parseLong(rs.getString("companyId"));
 				int deleted = Integer.parseInt(rs.getString("deleted"));
 				int rate = Integer.parseInt(rs.getString("rate"));
 				int version = Integer.parseInt(rs.getString("version"));
 				
-				User user = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted,rate,version);
+				User user = new User(userId,username,password,role,email,country,daily,weekly,kartica,companyId,deleted,rate,version);
 				list.add(user);
 				System.out.println();
 			}
@@ -73,25 +74,32 @@ public class UserDao {
 	}
 	public long save(User user) throws SQLException {
 		loadDB();
+		long id =0;
+		/*
+		 * Prvo provera za username,ako vec postoji ne moze
+		 */
+		ArrayList<User> userById = findUserById(user.getId());
+		if(userById.size() > 0) {
+			System.out.println("NO REGISTER::USERNAME IS ALREADY TAKEN");
+			return 0;
+		}else {
 		int res = 0;
 		String sql ="";
         try {
             con.setAutoCommit(false);
             System.out.println(user);
-            sql = "insert into User (username, password, email, country, role, daily, weekly,companyId,deleted,rate)"
+            sql = "insert into User (username, password, email, country, role, daily, weekly,companyId,deleted,rate,version)"
                     + "values ('" + user.getUsername() + "','" + user.getPassword() + "','" + user.getEmail() + "','" +
-            		user.getCountry() + "',"+user.getRole()+ ",'"+ String.valueOf(user.getDaily()) + "','"+String.valueOf(user.getWeekly())+"',"+user.getCompanyId()+","+user.getDeleted()+",0)";
+            		user.getCountry() + "',"+user.getRole()+ ",'"+ String.valueOf(user.getDaily()) + "','"+String.valueOf(user.getWeekly())+"',"+user.getCompanyId()+","+user.getDeleted()+",0,0)";
             res = st.executeUpdate(sql);
-            // If there is no error.
             con.commit();
         } catch (SQLException ex) {
             ex.printStackTrace();
-            //if have any error
             System.out.println("SQL ERROR::SAVE-USER:");
             con.rollback();
         }
         st.close();
-        long id = 0;
+        id = 0;
         sql = "SELECT * FROM webProjDB.user WHERE id = LAST_INSERT_ID();";
         System.out.println(sql);
         PreparedStatement statement = (PreparedStatement) con.prepareStatement(sql);
@@ -103,6 +111,7 @@ public class UserDao {
         	System.out.println("SQL ERROR:LAST_INSERT_ID()");
         }
         con.close();
+		}
         return id;
 	}
 	
@@ -121,12 +130,13 @@ public class UserDao {
 				int role = Integer.parseInt(rs.getString("role"));
 				int daily = rs.getInt("daily");
 				int weekly = rs.getInt("weekly");
+				String kartica = rs.getString("kartica");
 				long companyId = Long.parseLong(rs.getString("companyId"));
 				int deleted = Integer.parseInt(rs.getString("deleted"));
                 int rate = Integer.parseInt(rs.getString("rate"));
 				int version = Integer.parseInt(rs.getString("version"));
 				
-				user = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted,rate,version);
+				user = new User(userId,username,password,role,email,country,daily,weekly,kartica,companyId,deleted,rate,version);
 			}
 		}catch(SQLException ex) {
 			System.out.println("SQL ERROR::");
@@ -154,12 +164,13 @@ public class UserDao {
 				int role = Integer.parseInt(rs.getString("role"));
 				int daily = rs.getInt("daily");
 				int weekly = rs.getInt("weekly");
+				String kartica = rs.getString("kartica");
 				long companyId = Long.parseLong(rs.getString("companyId"));
 				int deleted = Integer.parseInt(rs.getString("deleted"));
 				int rate = Integer.parseInt(rs.getString("rate"));
 				int version = Integer.parseInt(rs.getString("version"));
 				
-				 u = new User(userId,nusername,password,role,email,country,daily,weekly,companyId,deleted,rate,version);
+				 u = new User(userId,nusername,password,role,email,country,daily,weekly,kartica,companyId,deleted,rate,version);
 			}
 		}catch(SQLException ex) {
 			System.out.println("SQL ERROR::LOGIN");
@@ -193,12 +204,13 @@ public class UserDao {
 				String country = rs.getString("country");
 				int daily = rs.getInt("daily");
 				int weekly = rs.getInt("weekly");
+				String kartica = rs.getString("kartica");
 				long companyId = Long.parseLong(rs.getString("companyId"));
 				int deleted = Integer.parseInt(rs.getString("deleted"));
                 int rate = Integer.parseInt(rs.getString("rate"));
 				int version = Integer.parseInt(rs.getString("version"));
 				
-				User user = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted,rate,version);
+				User user = new User(userId,username,password,role,email,country,daily,weekly,kartica,companyId,deleted,rate,version);
 				list.add(user);
 				System.out.println();
 			}
@@ -233,19 +245,39 @@ public class UserDao {
 		int res = 0;
 		String sql = "UPDATE webProjDB.user " + 
 				"SET username='"+user.getUsername()+"',password='"+user.getPassword()+"',email='"+user.getEmail()+"',"+
-				"country='"+user.getCountry()+"',"+"role="+user.getRole()+","+"daily="+user.getDaily()+","+"weekly="+user.getWeekly()+",companyId="+user.getCompanyId()+
-				" WHERE id="+user.getId()+";";
+				"country='"+user.getCountry()+"',"+"role="+user.getRole()+","+"daily="+user.getDaily()+","+"weekly="+user.getWeekly()+",companyId="+user.getCompanyId()+",kartica='"+user.getKartica()+
+				"' WHERE id="+user.getId()+";";
 		System.out.println(sql);
 		try {
 			res = st.executeUpdate(sql);
 		}catch(SQLException ex) {
-			System.out.println("SQL ERROR::");
+			System.out.println("SQL ERROR::UPDATE");
 		}finally {
-			rs.close();
 			st.close();
 			con.close();
 		}
 		return user;
+	}
+	
+	/*
+	 * Ako mu se prosledi rola 10 znaci da je samo poslao test ali jos nije approve znaci ceka da bude approve i prodavac,
+	 * ako mu se prosledi rola 3 test mu je approved i stvarno je postao prodavac
+	 */
+	public int becomeSeller(long userId,int role) throws SQLException {
+		loadDB();
+		int res = 0;
+		String sql = "UPDATE webProjDB.user " + 
+				"SET role="+role+" WHERE id="+userId+";";
+		System.out.println(sql);
+		try {
+			res = st.executeUpdate(sql);
+		}catch(SQLException ex) {
+			System.out.println("SQL ERROR::UPDATE");
+		}finally {
+			st.close();
+			con.close();
+		}
+		return res;
 	}
 	
 	public ArrayList<User> findUserById(long id) throws SQLException {
@@ -272,12 +304,13 @@ public class UserDao {
 				String country = rs.getString("country");
 				int daily = rs.getInt("daily");
 				int weekly = rs.getInt("weekly");
+				String kartica = rs.getString("kartica");
 				long companyId = Long.parseLong(rs.getString("companyId"));
 				int deleted = Integer.parseInt(rs.getString("deleted"));
                 int rate = Integer.parseInt(rs.getString("rate"));
 				int version = Integer.parseInt(rs.getString("version"));
 				
-				user = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted,rate,version);
+				user = new User(userId,username,password,role,email,country,daily,weekly,kartica,companyId,deleted,rate,version);
 			 System.out.println("+++"+user);	
 			 list.add(user);
 			}
@@ -352,11 +385,12 @@ public class UserDao {
 				String country = rs.getString("country");
 				int daily = rs.getInt("daily");
 				int weekly = rs.getInt("weekly");
+				String kartica = rs.getString("kartica");
 				int deleted = Integer.parseInt(rs.getString("deleted"));
                 int rate = Integer.parseInt(rs.getString("rate"));
 				int version = Integer.parseInt(rs.getString("version"));
 				
-				u = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted,rate,version);
+				u = new User(userId,username,password,role,email,country,daily,weekly,kartica,companyId,deleted,rate,version);
 				
 				System.out.println();
 			}
@@ -395,11 +429,12 @@ public class UserDao {
 				String country = rs.getString("country");
 				int daily = rs.getInt("daily");
 				int weekly = rs.getInt("weekly");
+				String kartica = rs.getString("kartica");
 				int deleted = Integer.parseInt(rs.getString("deleted"));
                 int rate = Integer.parseInt(rs.getString("rate"));
 				int version = Integer.parseInt(rs.getString("version"));
 				
-				u = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted,rate,version);
+				u = new User(userId,username,password,role,email,country,daily,weekly,kartica,companyId,deleted,rate,version);
 				users.add(u);
 				System.out.println();
 			}
@@ -438,12 +473,13 @@ public class UserDao {
 				String country = rs.getString("country");
 				int daily = rs.getInt("daily");
 				int weekly = rs.getInt("weekly");
+				String kartica = rs.getString("kartica");
 				long companyId = Long.parseLong(rs.getString("companyId"));
 				int deleted = Integer.parseInt(rs.getString("deleted"));
                 int rate = Integer.parseInt(rs.getString("rate"));
 				int version = Integer.parseInt(rs.getString("version"));
 
-				u = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted,rate,version);
+				u = new User(userId,username,password,role,email,country,daily,weekly,kartica,companyId,deleted,rate,version);
 				users.add(u);
 				System.out.println();
 			}

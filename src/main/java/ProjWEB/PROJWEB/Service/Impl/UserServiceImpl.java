@@ -26,12 +26,6 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public User editUser(long id, User user) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public boolean deleteUser(long id) throws SQLException {
 		
 		boolean response = false;
@@ -52,9 +46,8 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public User editUser(User user) {
-		// TODO Auto-generated method stub
-		return null;
+	public User editUser(User user) throws SQLException {	
+		return userDao.update(user);
 	}
 
 	@Override
@@ -92,6 +85,20 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public int changePassword(UserChangePasswordDto dto) throws SQLException {
 		return userDao.changePassword(dto);
+	}
+
+	@Override
+	public boolean becomeSeller(long userId) throws SQLException {
+		boolean queryResult = false;
+		if(userDao.becomeSeller(userId, 3) > 0) queryResult = true;
+		return queryResult;
+	}
+
+	@Override
+	public boolean userSendTest(long userId) throws SQLException {
+		boolean queryResult = false;
+		if(userDao.becomeSeller(userId, 10) > 0) queryResult = true;
+		return queryResult;
 	}
 
 }

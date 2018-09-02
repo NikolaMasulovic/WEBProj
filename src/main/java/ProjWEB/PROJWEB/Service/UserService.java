@@ -16,7 +16,7 @@ public interface UserService {
 	
 	public User getUserByUsername(String username);
 	
-	public User editUser(long id, User user);
+	//public User editUser(long id, User user) throws SQLException;
 	
 	public boolean deleteUser(long id) throws SQLException;
 	
@@ -26,7 +26,7 @@ public interface UserService {
 	
 	public List<User> getUsersByRole(String role);
 	
-	public User editUser(User user);
+	public User editUser(User user) throws SQLException ;
 	
 	public int changePassword(UserChangePasswordDto dto) throws SQLException ;
 	
@@ -37,5 +37,9 @@ public interface UserService {
 	public List<User> getUsersForCompany(long companyId) throws SQLException ;
 	
 	public List<User> findAllOperatorsForAdmin() throws SQLException ;
+	
+	public boolean becomeSeller(long userId) throws SQLException ;
+	
+	public boolean userSendTest(long userId) throws SQLException ;
 
 }
