@@ -18,15 +18,13 @@ public interface UserService {
 	
 	public User editUser(long id, User user);
 	
-	public void deleteUser(long id);
+	public boolean deleteUser(long id) throws SQLException;
 	
 	public long register(User user) throws SQLException ;
 
 	public UserLoginResponse login(UserLoginDto user) throws SQLException ;
 	
 	public List<User> getUsersByRole(String role);
-	
-	public boolean deleteUser(int userId);
 	
 	public User editUser(User user);
 	

@@ -32,8 +32,11 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public void deleteUser(long id) {
-		// TODO Auto-generated method stub
+	public boolean deleteUser(long id) throws SQLException {
+		
+		boolean response = false;
+		if(userDao.delete(id) > 0) response = true;
+		return response;
 		
 	}
 
@@ -46,12 +49,6 @@ public class UserServiceImpl implements UserService{
 	public List<User> getUsersByRole(String role) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public boolean deleteUser(int userId) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override

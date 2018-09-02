@@ -26,6 +26,10 @@ public class User {
 	 *ocena po kojoj se izvlace useri 
 	 */
 	private int rate;
+	/*
+	 * optimistic lock
+	 */
+	private int version;
 	
 	public User() {}
 	
@@ -101,8 +105,14 @@ public class User {
 	public void setRate(int rate) {
 		this.rate = rate;
 	}
+	public int getVersion() {
+		return version;
+	}
+	public void setVersion(int version) {
+		this.version = version;
+	}
 	public User(long id, String username, String password, int role, String email, String country, int daily,
-			int weekly,long companyId,int deleted,int rate) {
+			int weekly,long companyId,int deleted,int rate,int version) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -115,13 +125,12 @@ public class User {
 		this.companyId = companyId;
 		this.deleted = deleted;
 		this.rate = rate;
+		this.version = version;
 	}
-
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", role=" + role + ", email="
 				+ email + ", country=" + country + ", daily=" + daily + ", weekly=" + weekly + ", kartica=" + kartica
-				+ ", companyId=" + companyId + ", deleted=" + deleted + ", rate=" + rate + "]";
+				+ ", companyId=" + companyId + ", deleted=" + deleted + ", rate=" + rate + ", version=" + version + "]";
 	}
-
 }

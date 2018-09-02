@@ -56,8 +56,9 @@ public class UserDao {
 				long companyId = Long.parseLong(rs.getString("companyId"));
 				int deleted = Integer.parseInt(rs.getString("deleted"));
 				int rate = Integer.parseInt(rs.getString("rate"));
+				int version = Integer.parseInt(rs.getString("version"));
 				
-				User user = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted,rate);
+				User user = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted,rate,version);
 				list.add(user);
 				System.out.println();
 			}
@@ -123,8 +124,9 @@ public class UserDao {
 				long companyId = Long.parseLong(rs.getString("companyId"));
 				int deleted = Integer.parseInt(rs.getString("deleted"));
                 int rate = Integer.parseInt(rs.getString("rate"));
+				int version = Integer.parseInt(rs.getString("version"));
 				
-				user = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted,rate);
+				user = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted,rate,version);
 			}
 		}catch(SQLException ex) {
 			System.out.println("SQL ERROR::");
@@ -155,9 +157,9 @@ public class UserDao {
 				long companyId = Long.parseLong(rs.getString("companyId"));
 				int deleted = Integer.parseInt(rs.getString("deleted"));
 				int rate = Integer.parseInt(rs.getString("rate"));
-
+				int version = Integer.parseInt(rs.getString("version"));
 				
-				 u = new User(userId,nusername,password,role,email,country,daily,weekly,companyId,deleted,rate);
+				 u = new User(userId,nusername,password,role,email,country,daily,weekly,companyId,deleted,rate,version);
 			}
 		}catch(SQLException ex) {
 			System.out.println("SQL ERROR::LOGIN");
@@ -194,8 +196,9 @@ public class UserDao {
 				long companyId = Long.parseLong(rs.getString("companyId"));
 				int deleted = Integer.parseInt(rs.getString("deleted"));
                 int rate = Integer.parseInt(rs.getString("rate"));
+				int version = Integer.parseInt(rs.getString("version"));
 				
-				User user = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted,rate);
+				User user = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted,rate,version);
 				list.add(user);
 				System.out.println();
 			}
@@ -209,25 +212,20 @@ public class UserDao {
 		return list;
 	}
 
-	public int delete(int id) throws SQLException {
+	public int delete(long id) throws SQLException {
 		loadDB();
-		String sql = "DELETE FROM webProjDB.User\n" + 
-				"WHERE id='"+id+"';";
-		int columnsNumber =0;
+		int res = 0;
+		String sql = "UPDATE webProjDB.user SET deleted = 1 WHERE id="+id+";";
+		System.out.println(sql);
 		try {
-			rs = st.executeQuery(sql);
-			ResultSetMetaData rsmd = rs.getMetaData();
-			columnsNumber = rsmd.getColumnCount();
-			//boolean response = rs.next();
-			System.out.println("-----"+rs.next());
+			res = st.executeUpdate(sql);
 		}catch(SQLException ex) {
-			System.out.println("SQL ERROR::");
+			System.out.println("SQL ERROR::DELETE");
 		}finally {
-			rs.close();
 			st.close();
 			con.close();
 		}
-		return columnsNumber;
+		return res;
 	}
 	
 	public User update(User user) throws SQLException {
@@ -277,8 +275,9 @@ public class UserDao {
 				long companyId = Long.parseLong(rs.getString("companyId"));
 				int deleted = Integer.parseInt(rs.getString("deleted"));
                 int rate = Integer.parseInt(rs.getString("rate"));
+				int version = Integer.parseInt(rs.getString("version"));
 				
-				user = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted,rate);
+				user = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted,rate,version);
 			 System.out.println("+++"+user);	
 			 list.add(user);
 			}
@@ -355,8 +354,9 @@ public class UserDao {
 				int weekly = rs.getInt("weekly");
 				int deleted = Integer.parseInt(rs.getString("deleted"));
                 int rate = Integer.parseInt(rs.getString("rate"));
+				int version = Integer.parseInt(rs.getString("version"));
 				
-				u = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted,rate);
+				u = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted,rate,version);
 				
 				System.out.println();
 			}
@@ -397,8 +397,9 @@ public class UserDao {
 				int weekly = rs.getInt("weekly");
 				int deleted = Integer.parseInt(rs.getString("deleted"));
                 int rate = Integer.parseInt(rs.getString("rate"));
+				int version = Integer.parseInt(rs.getString("version"));
 				
-				u = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted,rate);
+				u = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted,rate,version);
 				users.add(u);
 				System.out.println();
 			}
@@ -440,8 +441,9 @@ public class UserDao {
 				long companyId = Long.parseLong(rs.getString("companyId"));
 				int deleted = Integer.parseInt(rs.getString("deleted"));
                 int rate = Integer.parseInt(rs.getString("rate"));
-				
-				u = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted,rate);
+				int version = Integer.parseInt(rs.getString("version"));
+
+				u = new User(userId,username,password,role,email,country,daily,weekly,companyId,deleted,rate,version);
 				users.add(u);
 				System.out.println();
 			}

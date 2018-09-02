@@ -48,14 +48,12 @@ public class MailService {
 		        msg.setText("Dear Mail Crawler,"
 					+ "\n\n No spam to my email, please!");
 				Transport.send(msg);
-		        //transport.send(message);
 
 				System.out.println("MAIL SENT::Done");
 
 			} catch (MessagingException e) {
 				throw new RuntimeException(e);
 			}
-			//transport.close();
 		}
 
 	    public void addAttachment(String filePath) throws MessagingException
