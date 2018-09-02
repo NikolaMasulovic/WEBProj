@@ -21,8 +21,6 @@ import ProjWEB.PROJWEB.Service.MailService;
 import ProjWEB.PROJWEB.Service.UserService;
 import ProjWEB.PROJWEB.Service.Impl.UserServiceImpl;
 
-
-
 @Path("/users")
 public class UserApi {
 	
