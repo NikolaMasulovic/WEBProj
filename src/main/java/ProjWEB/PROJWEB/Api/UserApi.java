@@ -84,5 +84,5 @@ public class UserApi {
 	public User updatePaymentCard(User user) throws SQLException {
 		return userService.editUser(user);
 	}
-
+	
 }

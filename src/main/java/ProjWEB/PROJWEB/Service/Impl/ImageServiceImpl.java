@@ -17,6 +17,7 @@ import javax.imageio.ImageIO;
 
 import ProjWEB.PROJWEB.Dao.ImageDao;
 import ProjWEB.PROJWEB.Domain.Image;
+import ProjWEB.PROJWEB.Domain.Dto.TestSaveResolutionDto;
 import ProjWEB.PROJWEB.Service.ImageService;
 import ProjWEB.PROJWEB.Service.ImageUtils;
 
@@ -26,13 +27,18 @@ public class ImageServiceImpl implements ImageService{
 	private ImageUtils imageUtils = new ImageUtils();
 
 
+	/*
+	 * vraca sve slike i pravi im base64
+	 * (non-Javadoc)
+	 * @see ProjWEB.PROJWEB.Service.ImageService#findAllImages()
+	 */
 	@Override
 	public List<Image> findAllImages() throws SQLException {
 		List<Image> forretrun = new ArrayList<>();
 		List<Image> forretrun1 = imageDao.findAll();
 		BufferedImage imagefile = null;
 		for (Image image : forretrun1) {
-			if(image.getId() == 25) {
+			
 				try {
 					imagefile = ImageIO.read(new File(image.getPath()));
 				} catch (IOException e) {
@@ -42,9 +48,7 @@ public class ImageServiceImpl implements ImageService{
 				}
 				image.setUrl(ImageUtils.base64FromImage(imagefile));
 				forretrun.add(image);
-			}
 		}
-		
 		return forretrun;
 	}
 
@@ -114,6 +118,9 @@ public class ImageServiceImpl implements ImageService{
 		return null;
 	}
 	
+	/*
+	 * dodaje watermark
+	 */
 	public BufferedImage addTextWatermark(String text, BufferedImage sourceImage) {
 	    Graphics2D g2d = (Graphics2D) sourceImage.getGraphics();
  
@@ -145,6 +152,12 @@ public class ImageServiceImpl implements ImageService{
  
 		System.out.println("The tex watermark is added to the image.");
 		return sourceImage;
+	}
+
+	@Override
+	public boolean doTest(TestSaveResolutionDto testSaveDto) throws SQLException {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }
