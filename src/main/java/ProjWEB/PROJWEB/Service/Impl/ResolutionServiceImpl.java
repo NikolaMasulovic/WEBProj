@@ -30,8 +30,7 @@ public class ResolutionServiceImpl implements ResolutionService {
 
 	@Override
 	public ArrayList<Resolution> getResolutionsforImage(long imageId, String resolution) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		return resolutionDao.getResolutionsforImage(imageId, resolution);
 	}
 
 	@Override
