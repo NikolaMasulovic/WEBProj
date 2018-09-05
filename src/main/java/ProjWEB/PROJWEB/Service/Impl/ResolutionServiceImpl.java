@@ -56,7 +56,12 @@ public class ResolutionServiceImpl implements ResolutionService {
 		List<Resolution> resolutions = new ArrayList<>();
 		for (BuyResolutionDto buyResolutionDto : buyResolutions) {
 			ArrayList<Resolution> imageResolutions = resolutionDao.getResolutionsforImage(buyResolutionDto.getImageId(), buyResolutionDto.getResolution());
-			resolutions.add(imageResolutions.get(0));
+			if(imageResolutions.size() > 0) {
+				resolutions.add(imageResolutions.get(0));
+			}else {
+				System.out.println("IMAGE CAN NOT BE FOUND::IMAGE ID:"+buyResolutionDto.getImageId());
+				return false;
+			}		
 			}
 		try {
 			mailService.sendWithAttachment(buyImageDto.getUserMail(), "You order", resolutions);

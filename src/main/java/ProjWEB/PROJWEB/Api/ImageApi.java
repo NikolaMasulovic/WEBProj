@@ -9,6 +9,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import ProjWEB.PROJWEB.Domain.Image;
 import ProjWEB.PROJWEB.Domain.Resolution;
@@ -60,8 +61,8 @@ public class ImageApi {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/buy")
-	public boolean buy(BuyImageDto buyImageDto) throws SQLException {
-		return resolutionService.buy(buyImageDto);
+	public Response buy(BuyImageDto buyImageDto) throws SQLException {
+		return Response.status(200).type("text/plain").entity(resolutionService.buy(buyImageDto)).build();
 	}
 	
 	@POST
