@@ -1,12 +1,11 @@
 package ProjWEB.PROJWEB.Service;
 
-import java.net.PasswordAuthentication;
+import java.util.List;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
-import javax.mail.Authenticator;
 import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -17,6 +16,9 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+
+import ProjWEB.PROJWEB.Domain.Resolution;
+import ProjWEB.PROJWEB.Domain.Dto.BuyResolutionDto;
 
 public class MailService {
 	
@@ -34,7 +36,8 @@ public class MailService {
 	        this.multipart = new MimeMultipart();
 	    }
 	    
-	    public void sendWithAttachment(String to,String title) throws MessagingException {
+	    //List<BuyResolutionDto> list
+	    public void sendWithAttachment(String to,String title,List<Resolution> list) throws MessagingException {
 
 			try {
 
@@ -47,6 +50,14 @@ public class MailService {
 		        msg.setSubject("Testing Subject");
 		        msg.setText("Dear Mail Crawler,"
 					+ "\n\n No spam to my email, please!");
+		        Multipart multipartMsg = new MimeMultipart();
+		        
+		        for (Resolution res : list) {
+		        	addAttachment(res.getPath(), msg, multipartMsg);
+				}
+		        
+		        
+		        
 				Transport.send(msg);
 
 				System.out.println("MAIL SENT::Done");
@@ -56,12 +67,12 @@ public class MailService {
 			}
 		}
 
-	    public void addAttachment(String filePath) throws MessagingException
+	    public void addAttachment(String filePath,Message mess,Multipart multipart) throws MessagingException
 	    {
 	        BodyPart messageBodyPart = getFileBodyPart(filePath);
 	        multipart.addBodyPart(messageBodyPart);
 
-	        message.setContent(multipart);
+	        mess.setContent(multipart);
 	    }
 
 	    private BodyPart getFileBodyPart(String filePath) throws MessagingException

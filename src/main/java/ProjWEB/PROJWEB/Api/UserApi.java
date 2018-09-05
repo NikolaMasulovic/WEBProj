@@ -30,7 +30,7 @@ public class UserApi {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<User> getUsers() throws SQLException, MessagingException {
-		mailService.sendWithAttachment("nikola.masulovic@netcast.rs", "Proba");
+		//mailService.sendWithAttachment("nikola.masulovic@netcast.rs", "Proba");
 		return userService.getAllUsers();
 	}
 	

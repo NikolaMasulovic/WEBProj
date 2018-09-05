@@ -7,12 +7,12 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import ProjWEB.PROJWEB.Domain.Image;
 import ProjWEB.PROJWEB.Domain.Resolution;
+import ProjWEB.PROJWEB.Domain.Dto.BuyImageDto;
 import ProjWEB.PROJWEB.Service.ImageService;
 import ProjWEB.PROJWEB.Service.ResolutionService;
 import ProjWEB.PROJWEB.Service.Impl.ImageServiceImpl;
@@ -50,11 +50,18 @@ public class ImageApi {
 		return resolutionService.findAll();
 	}
 	
-	@GET
+//	@GET
+//	@Produces(MediaType.APPLICATION_JSON)
+//	@Path("/resolutions/{imageId}/{resolution}")
+//	public List<Resolution> getResolutionsForImageId(@PathParam("imageId") long imageId,@PathParam("resolution") String resolution) throws SQLException {
+//		return resolutionService.getResolutionsforImage(imageId, resolution);
+//	}
+	
+	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/resolutions/{imageId}/{resolution}")
-	public List<Resolution> getResolutionsForImageId(@PathParam("imageId") long imageId,@PathParam("resolution") String resolution) throws SQLException {
-		return resolutionService.getResolutionsforImage(imageId, resolution);
+	@Path("/buy")
+	public boolean buy(BuyImageDto buyImageDto) throws SQLException {
+		return resolutionService.buy(buyImageDto);
 	}
 	
 	@POST
