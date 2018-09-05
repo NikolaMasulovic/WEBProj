@@ -11,7 +11,7 @@ public interface ResolutionService {
 	
 	public List<Resolution> findAll() throws SQLException;
 	
-	public boolean save(Resolution resolution) throws SQLException;
+	public boolean save(Resolution resolution,String folderName,String name) throws SQLException;
 	
 	public ArrayList<Resolution> getResolutionsforImage(long imageId,String resolution) throws SQLException;
 	

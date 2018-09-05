@@ -14,6 +14,7 @@ import ProjWEB.PROJWEB.Dao.ResolutionDao;
 import ProjWEB.PROJWEB.Domain.Resolution;
 import ProjWEB.PROJWEB.Domain.Dto.BuyImageDto;
 import ProjWEB.PROJWEB.Domain.Dto.BuyResolutionDto;
+import ProjWEB.PROJWEB.Service.ImageService;
 import ProjWEB.PROJWEB.Service.ImageUtils;
 import ProjWEB.PROJWEB.Service.MailService;
 import ProjWEB.PROJWEB.Service.ResolutionService;
@@ -30,10 +31,26 @@ public class ResolutionServiceImpl implements ResolutionService {
 	}
 
 	@Override
-	public boolean save(Resolution resolution) throws SQLException {
+	public boolean save(Resolution resolution,String folderName,String name) throws SQLException {
 		boolean result = false;
+		String imageName = name+resolution.getResolution();
+		String path = "/Users/mac/Desktop/webDir/"+folderName+"/"+imageName+".png";
+		resolution.setPath(path);
 		if(resolutionDao.save(resolution) > 0) {
 			result = true;
+			BufferedImage img = imageUtils.imageFromBase64(resolution.getBase64());
+			File outputfile = new File("/Users/mac/Desktop/webDir/"+folderName+"/"+imageName+".png");
+			
+			try {
+				ImageIO.write(img, "png", outputfile);
+				System.out.println("IMAGE RES AS FILE SAVED::");
+			} catch (IOException e) {
+				System.out.println("SAVE IMAGE RES AS FILE ERROR::");
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return false;
+			}
+			resolution.setPath("/Users/mac/Desktop/webDir/"+folderName+"/"+imageName+".png");
 		}
 		return result;
 	}
@@ -69,24 +86,7 @@ public class ResolutionServiceImpl implements ResolutionService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
-		}
-//		ArrayList<Resolution> imageResolutions = resolutionDao.getResolutionsforImage(imageId, resolution);
-//		BufferedImage imagefile = null;
-//		boolean result = false;
-//		
-//		if(imageResolutions.size() > 0) {
-//			Resolution imageResolution = imageResolutions.get(0);
-//			try {
-//				imagefile = ImageIO.read(new File(imageResolution.getBase64()));
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//				return false;
-//			}
-//			mailService.sendWithAttachment(to, title);
-//		}
-//		
+		}	
 		return true;
 	}
-
 }

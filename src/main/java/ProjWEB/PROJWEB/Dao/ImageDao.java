@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import com.mysql.jdbc.PreparedStatement;
+
 import ProjWEB.PROJWEB.Domain.Image;
 public class ImageDao {
 	
@@ -41,7 +43,7 @@ public class ImageDao {
 			    }
 				long id = Long.parseLong(rs.getString("id"));
 				String datePublished = rs.getString("datePublished");
-				double price = Double.parseDouble(rs.getString("price"));
+				int price = Integer.parseInt(rs.getString("price"));
 				int numOfCopies = rs.getInt("numOfCopiesSelled");
 				String name = rs.getString("name");
 				String place = rs.getString("place");
@@ -65,31 +67,38 @@ public class ImageDao {
 		return list;
 	}
 	
-	public int save(Image image){
+	public int save(Image image) throws SQLException{
 		loadDB();
 		int result = 0;
+		int id =0;
+		String sql = "";
         try {
             con.setAutoCommit(false);
             System.out.println(image);
-            String sql = "INSERT into webProjDB.slika (numOfCopiesSelled, datePublished, price, name,place,description,userId,path,approved) values ("+0+",'"+image.getDatePublished()+"',"+image.getPrice()+",'"+image.getName()+"','"+image.getPlace()+"','"+image.getDescription()+"',"+image.getUserId()+",'"+image.getPath()+"',"+0+");";
+            sql = "INSERT into webProjDB.slika (numOfCopiesSelled, datePublished, price, name,place,description,userId,path,approved) values ("+0+",'"+image.getDatePublished()+"',"+image.getPrice()+",'"+image.getName()+"','"+image.getPlace()+"','"+image.getDescription()+"',"+image.getUserId()+",'"+image.getPath()+"',"+0+");";
             System.out.println(sql);
             result = st.executeUpdate(sql);
             System.out.println("____SUCCESS");
             con.commit();
         } catch (SQLException ex) {
             ex.printStackTrace();
-        } finally {
-        	try {
-				con.rollback();
-				st.close();
-	            con.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-            
+            System.out.println("SQL ERROR::SAVE-IMAGE:");
+            con.rollback();
         }
-        return result;
+        st.close();
+        id = 0;
+        sql = "SELECT * FROM webProjDB.slika WHERE id = LAST_INSERT_ID();";
+        System.out.println(sql);
+        PreparedStatement statement = (PreparedStatement) con.prepareStatement(sql);
+        ResultSet resultSet = statement.executeQuery();
+        if(resultSet.next()) {
+        	id = resultSet.getInt("id");
+        	System.out.println("IMAGE ID:"+id);
+        }else {
+        	System.out.println("SQL ERROR:LAST_INSERT_ID()");
+        }
+        con.close();
+		
+        return id;
 	}
-
 }

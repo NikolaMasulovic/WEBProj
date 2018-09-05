@@ -8,7 +8,7 @@ public class Image {
 	private long id;
 	private int numOfCopiesSelled;
 	private String datePublished;
-	private Double price;
+	private int price;
 	private String name;
 	private String place;
 	private String description;
@@ -19,7 +19,7 @@ public class Image {
 
 	public Image() {}
 
-	public Image(long id, int numOfCopiesSelled, String datePublished, Double price, String name, String place,
+	public Image(long id, int numOfCopiesSelled, String datePublished, int price, String name, String place,
 			String description, long userId,String path,int approved) {
 		super();
 		this.id = id;
@@ -59,11 +59,11 @@ public class Image {
 		this.datePublished = datePublished;
 	}
 
-	public Double getPrice() {
+	public int getPrice() {
 		return price;
 	}
 
-	public void setPrice(Double price) {
+	public void setPrice(int price) {
 		this.price = price;
 	}
 

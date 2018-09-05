@@ -10,21 +10,30 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.imageio.ImageIO;
 
 import ProjWEB.PROJWEB.Dao.ImageDao;
+import ProjWEB.PROJWEB.Dao.UserDao;
 import ProjWEB.PROJWEB.Domain.Image;
-import ProjWEB.PROJWEB.Domain.Dto.TestSaveResolutionDto;
+import ProjWEB.PROJWEB.Domain.Resolution;
+import ProjWEB.PROJWEB.Domain.User;
+import ProjWEB.PROJWEB.Domain.Dto.SaveTestDto;
 import ProjWEB.PROJWEB.Service.ImageService;
 import ProjWEB.PROJWEB.Service.ImageUtils;
+import ProjWEB.PROJWEB.Service.ResolutionService;
 
 public class ImageServiceImpl implements ImageService{
 	
 	private ImageDao imageDao = new ImageDao();
 	private ImageUtils imageUtils = new ImageUtils();
+	private ResolutionService resolutionService = new ResolutionServiceImpl();
+	private UserDao userDao = new UserDao();
 
 
 	/*
@@ -36,20 +45,20 @@ public class ImageServiceImpl implements ImageService{
 	public List<Image> findAllImages() throws SQLException {
 		List<Image> forretrun = new ArrayList<>();
 		List<Image> forretrun1 = imageDao.findAll();
-		BufferedImage imagefile = null;
-		for (Image image : forretrun1) {
-			
-				try {
-					imagefile = ImageIO.read(new File(image.getPath()));
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					System.out.println("GETTING IMAGE FROM FILE ERROR::");
-					e.printStackTrace();
-				}
-				image.setUrl(ImageUtils.base64FromImage(imagefile));
-				forretrun.add(image);
-		}
-		return forretrun;
+//		BufferedImage imagefile = null;
+//		for (Image image : forretrun1) {
+//				try {
+//					imagefile = ImageIO.read(new File(image.getPath()));
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					System.out.println("GETTING IMAGE FROM FILE ERROR::");
+//					e.printStackTrace();
+//					continue;
+//				}
+//				image.setUrl(ImageUtils.base64FromImage(imagefile));
+//				forretrun.add(image);
+//		}
+		return forretrun1;
 	}
 
 	/*
@@ -59,11 +68,12 @@ public class ImageServiceImpl implements ImageService{
 	 * 3)retrun
 	 */
 	@Override
-	public boolean save(Image image) {
+	public int save(Image image) throws SQLException{
 		System.out.println("Image name::"+image.getName());
 		
-		String folderName ="proba";
-		String imageName = "ImeslikeWATERMARK";
+		ArrayList<User> u = userDao.findUserById(image.getUserId());
+		String folderName = u.get(0).getUsername();
+		String imageName = image.getName();
 		
 		//1
         File theDir = new File("/Users/mac/Desktop/webDir/"+folderName);
@@ -97,7 +107,7 @@ public class ImageServiceImpl implements ImageService{
 		image.setPath("/Users/mac/Desktop/webDir/"+folderName+"/"+imageName+".png");
 		int result = imageDao.save(image);
 		System.out.println("IMAGE SAVE RESULT::"+result);
-		return false;
+		return result;
 	}
 
 	@Override
@@ -155,9 +165,36 @@ public class ImageServiceImpl implements ImageService{
 	}
 
 	@Override
-	public boolean doTest(TestSaveResolutionDto testSaveDto) throws SQLException {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean doTest(SaveTestDto testSaveDto) throws SQLException {
+		
+		String name = testSaveDto.getName();
+		String description = testSaveDto.getDescription();
+		List<Resolution> resolutions = testSaveDto.getResolutions();
+		long userId = testSaveDto.getUserId();
+		
+		ArrayList<User> u = userDao.findUserById(userId);
+		String folderName = u.get(0).getUsername();
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date date = new Date();
+		String datePublished = dateFormat.format(date);
+		System.out.println(dateFormat.format(date));
+		
+		
+		
+		Image img = new Image(0, 0, datePublished, 0, name+"WATERMARK", "", description,userId, "", 0);
+		img.setUrl(resolutions.get(0).getBase64());
+		int imageId =  save(img);
+		
+		for (Resolution resolution : resolutions) {
+			resolution.setSlikaId(imageId);
+			if(!resolutionService.save(resolution,folderName,testSaveDto.getName())) {
+				return false;
+			}
+			System.out.println("Uspesno sacuvano.");	
+		}
+		
+		return true;
 	}
 	
 }

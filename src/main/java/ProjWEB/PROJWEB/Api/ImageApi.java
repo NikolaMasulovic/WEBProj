@@ -14,6 +14,7 @@ import javax.ws.rs.core.Response;
 import ProjWEB.PROJWEB.Domain.Image;
 import ProjWEB.PROJWEB.Domain.Resolution;
 import ProjWEB.PROJWEB.Domain.Dto.BuyImageDto;
+import ProjWEB.PROJWEB.Domain.Dto.SaveTestDto;
 import ProjWEB.PROJWEB.Service.ImageService;
 import ProjWEB.PROJWEB.Service.ResolutionService;
 import ProjWEB.PROJWEB.Service.Impl.ImageServiceImpl;
@@ -67,11 +68,18 @@ public class ImageApi {
 	
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/doTest")
+	public Response doTest(SaveTestDto saveTestDto) throws SQLException {
+		return Response.status(200).type("text/plain").entity(imageService.doTest(saveTestDto)).build();
+	}
+	
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/saveResolution")
 	public void saveResolution(Resolution resolution) throws SQLException {
 		System.out.println("SAVE RESOLUTION API::");
-		boolean result = resolutionService.save(resolution);
+		boolean result = resolutionService.save(resolution,"folderName","Name");
 		System.out.println("RESOLUTION RESPONSE:"+result);
 	}
 }

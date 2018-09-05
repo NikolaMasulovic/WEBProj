@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ProjWEB.PROJWEB.Domain.Image;
-import ProjWEB.PROJWEB.Domain.Dto.TestSaveResolutionDto;
+import ProjWEB.PROJWEB.Domain.Dto.SaveTestDto;
 public interface ImageService {
 
 	public List<Image> findAllImages() throws SQLException ;
    
-	public boolean save(Image image);
+	public int save(Image image) throws SQLException;
 	
-	public boolean doTest(TestSaveResolutionDto testSaveDto) throws SQLException;
+	public boolean doTest(SaveTestDto testSaveDto) throws SQLException;
 	
 	//public List<ImageDto> getAllImages(long startId,long endId);
 	
