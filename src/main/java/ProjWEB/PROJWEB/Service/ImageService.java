@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ProjWEB.PROJWEB.Domain.Image;
+import ProjWEB.PROJWEB.Domain.Dto.ImageUnapprovedDto;
 import ProjWEB.PROJWEB.Domain.Dto.SaveTestDto;
 public interface ImageService {
 
@@ -29,6 +30,8 @@ public interface ImageService {
 	public boolean approveTest(long adminId,long userId) throws SQLException;
 	
 	public List<Image> getImagesByTag(long tagId,int page);
+	
+	public List<ImageUnapprovedDto> seeAllUnapproved() throws SQLException;
 	
 	//public int saveTest(List<ImageSaveDto> dtos);
 }

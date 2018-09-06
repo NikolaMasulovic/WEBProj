@@ -23,6 +23,7 @@ import ProjWEB.PROJWEB.Dao.UserDao;
 import ProjWEB.PROJWEB.Domain.Image;
 import ProjWEB.PROJWEB.Domain.Resolution;
 import ProjWEB.PROJWEB.Domain.User;
+import ProjWEB.PROJWEB.Domain.Dto.ImageUnapprovedDto;
 import ProjWEB.PROJWEB.Domain.Dto.SaveTestDto;
 import ProjWEB.PROJWEB.Service.ImageService;
 import ProjWEB.PROJWEB.Service.ImageUtils;
@@ -101,7 +102,6 @@ public class ImageServiceImpl implements ImageService{
 			System.out.println("IMAGE AS FILE SAVED::");
 		} catch (IOException e) {
 			System.out.println("SAVE IMAGE AS FILE ERROR::");
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		image.setPath("/Users/mac/Desktop/webDir/"+folderName+"/"+imageName+".png");
@@ -214,6 +214,43 @@ public class ImageServiceImpl implements ImageService{
 		}
 		
 		return true;
+	}
+
+	@Override
+	public List<ImageUnapprovedDto> seeAllUnapproved() throws SQLException {
+		
+		ArrayList<User> users = userDao.findAll();
+		List<ImageUnapprovedDto> unapprovedDtos = new ArrayList<>();
+		
+		for (User user : users) {
+			ArrayList<Image> images = imageDao.findAllByUserId(user.getId(), 0);
+			ImageUnapprovedDto imageUnADto = new ImageUnapprovedDto();
+			if(images.size() > 0) {
+				imageUnADto.setUser(user);
+				BufferedImage imagefile = null;
+				//get res
+				ArrayList<Resolution> resolutions = new ArrayList<>();
+				for (Image image : images) {
+					ArrayList<Resolution> res = resolutionService.getResolutionsforImage(image.getId(), "HD");
+						try {
+							imagefile = ImageIO.read(new File(res.get(0).getPath()));//prebaciti u res service
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							System.out.println("GETTING IMAGE FROM FILE ERROR::");
+							e.printStackTrace();
+							continue;
+						}
+						res.get(0).setBase64(ImageUtils.base64FromImage(imagefile));
+						resolutions.add(res.get(0));
+//						forretrun.add(image);
+			}
+				imageUnADto.setImages(resolutions);
+				unapprovedDtos.add(imageUnADto);
+			}
+			
+		}
+		
+		return unapprovedDtos;
 	}
 	
 }

@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
 import ProjWEB.PROJWEB.Domain.Image;
 import ProjWEB.PROJWEB.Domain.Resolution;
 import ProjWEB.PROJWEB.Domain.Dto.BuyImageDto;
+import ProjWEB.PROJWEB.Domain.Dto.ImageUnapprovedDto;
 import ProjWEB.PROJWEB.Domain.Dto.SaveTestDto;
 import ProjWEB.PROJWEB.Service.ImageService;
 import ProjWEB.PROJWEB.Service.ResolutionService;
@@ -83,12 +84,18 @@ public class ImageApi {
 		boolean result = resolutionService.save(resolution,"folderName","Name");
 		System.out.println("RESOLUTION RESPONSE:"+result);
 	}
-	//@PathParam("adminId") long adminId,
+
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/approveTest/{userId}/admin/{adminId}")
 	public Response approveTest(@PathParam("userId") long userId,@PathParam("adminId") long adminId) throws SQLException {
 		System.out.println("user"+userId+"--admin"+adminId);
 		return Response.status(200).type("text/plain").entity(imageService.approveTest(adminId, userId)).build();
+	}
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/seeAllUnapproved")
+	public List<ImageUnapprovedDto> seeAllUnapproved() throws SQLException {
+		return imageService.seeAllUnapproved();
 	}
 }
