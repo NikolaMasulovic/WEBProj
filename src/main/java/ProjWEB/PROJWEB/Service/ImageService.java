@@ -26,6 +26,8 @@ public interface ImageService {
 	
 	public boolean approve(long userId,int approve);
 	
+	public boolean approveTest(long adminId,long userId) throws SQLException;
+	
 	public List<Image> getImagesByTag(long tagId,int page);
 	
 	//public int saveTest(List<ImageSaveDto> dtos);

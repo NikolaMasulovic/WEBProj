@@ -7,6 +7,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -81,5 +82,13 @@ public class ImageApi {
 		System.out.println("SAVE RESOLUTION API::");
 		boolean result = resolutionService.save(resolution,"folderName","Name");
 		System.out.println("RESOLUTION RESPONSE:"+result);
+	}
+	//@PathParam("adminId") long adminId,
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/approveTest/{userId}/admin/{adminId}")
+	public Response approveTest(@PathParam("userId") long userId,@PathParam("adminId") long adminId) throws SQLException {
+		System.out.println("user"+userId+"--admin"+adminId);
+		return Response.status(200).type("text/plain").entity(imageService.approveTest(adminId, userId)).build();
 	}
 }

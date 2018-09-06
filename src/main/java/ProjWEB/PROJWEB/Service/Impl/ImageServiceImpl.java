@@ -196,5 +196,24 @@ public class ImageServiceImpl implements ImageService{
 		
 		return true;
 	}
+
+	@Override
+	public boolean approveTest(long adminId, long userId) throws SQLException {
+	
+		ArrayList<User> u = userDao.findUserById(adminId);
+		System.out.println("user"+userId+"--admin"+adminId);
+		int role = u.get(0).getRole();
+		if(role == 1) {
+			int result = imageDao.approveTest(userId);
+			if(result == 3) {
+				System.out.println("Uspesan approve");
+			}
+		}else {
+			System.out.println("YOU ARE NOT OPERATER::");
+			return false;
+		}
+		
+		return true;
+	}
 	
 }

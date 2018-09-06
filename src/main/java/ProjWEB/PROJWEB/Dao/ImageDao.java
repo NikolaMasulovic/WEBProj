@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import com.mysql.jdbc.PreparedStatement;
 
 import ProjWEB.PROJWEB.Domain.Image;
+import ProjWEB.PROJWEB.Domain.User;
 public class ImageDao {
 	
 	Connection con;
@@ -100,5 +101,21 @@ public class ImageDao {
         con.close();
 		
         return id;
+	}
+	public int approveTest(long userId) throws SQLException {
+		loadDB();
+		int res = 0;
+		System.out.println("user"+userId);
+		String sql = "UPDATE webProjDB.slika SET approved = 1 WHERE userId = "+userId+";";
+		System.out.println(sql);
+		try {
+			res = st.executeUpdate(sql);
+		}catch(SQLException ex) {
+			System.out.println("SQL ERROR::UPDATE APPROVED");
+		}finally {
+			st.close();
+			con.close();
+		}
+		return res;
 	}
 }
