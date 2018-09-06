@@ -1,5 +1,8 @@
 package ProjWEB.PROJWEB.Domain;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Resolution {
 	
 	private long id;
