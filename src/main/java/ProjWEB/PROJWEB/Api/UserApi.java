@@ -55,8 +55,8 @@ public class UserApi {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/changePassword")
-	public int changePassword(UserChangePasswordDto changeDto) throws SQLException {
-		return userService.changePassword(changeDto);
+	public Response changePassword(UserChangePasswordDto changeDto) throws SQLException {
+		return Response.status(200).type("text/plain").entity(userService.changePassword(changeDto)).build();
 	}
 	
 	@GET

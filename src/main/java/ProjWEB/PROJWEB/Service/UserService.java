@@ -28,7 +28,7 @@ public interface UserService {
 	
 	public User editUser(User user) throws SQLException ;
 	
-	public int changePassword(UserChangePasswordDto dto) throws SQLException ;
+	public boolean changePassword(UserChangePasswordDto dto) throws SQLException ;
 	
 	public String approveCompany(long companyId) throws SQLException ;
 	

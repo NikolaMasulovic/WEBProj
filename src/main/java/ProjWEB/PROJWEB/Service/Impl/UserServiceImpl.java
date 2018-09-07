@@ -83,8 +83,10 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public int changePassword(UserChangePasswordDto dto) throws SQLException {
-		return userDao.changePassword(dto);
+	public boolean changePassword(UserChangePasswordDto dto) throws SQLException {
+		boolean result = false;
+		if(userDao.changePassword(dto) > 0) result = true;
+		return result;
 	}
 
 	@Override
