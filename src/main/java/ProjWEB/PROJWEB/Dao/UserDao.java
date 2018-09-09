@@ -224,10 +224,10 @@ public class UserDao {
 		return list;
 	}
 
-	public int delete(long id) throws SQLException {
+	public int delete(long id,int deleted) throws SQLException {
 		loadDB();
 		int res = 0;
-		String sql = "UPDATE webProjDB.user SET deleted = 1 WHERE id="+id+";";
+		String sql = "UPDATE webProjDB.user SET deleted = "+deleted+" WHERE id="+id+";";
 		System.out.println(sql);
 		try {
 			res = st.executeUpdate(sql);

@@ -168,5 +168,38 @@ public class TagDao {
 		}
 		return list;
 	}
+	
+	public ArrayList<Tag> tagStatistic() throws SQLException {
+		ArrayList<Tag> list = new ArrayList<>();
+		loadDB();
+		String sql = "SELECT * FROM webProjDB.tag ORDER BY count DESC;";
+		try {
+			rs = st.executeQuery(sql);
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int columnsNumber = rsmd.getColumnCount();
+			while(rs.next()) {
+				for (int i = 1; i <= columnsNumber; i++) {
+			        if (i > 1) System.out.print(",  ");
+			        String columnValue = rs.getString(i);
+			        System.out.print(columnValue);
+			    }
+				long tagId = Long.parseLong(rs.getString("id"));
+				String name = rs.getString("tagName");
+				int count = Integer.parseInt(rs.getString("count"));
+				
+				Tag tag = new Tag(tagId, name,count);
+				list.add(tag);
+				System.out.println();
+			}
+		}catch(SQLException ex) {
+			System.out.println("TAG ERROR::STATISTIC");
+			ex.printStackTrace();
+		}finally {
+			rs.close();
+			st.close();
+			con.close();
+		}
+		return list;
+	}
 
 }

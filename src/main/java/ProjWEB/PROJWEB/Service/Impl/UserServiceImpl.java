@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService{
 	public boolean deleteUser(long id) throws SQLException {
 		
 		boolean response = false;
-		if(userDao.delete(id) > 0) response = true;
+		if(userDao.delete(id,1) > 0) response = true;
 		return response;
 		
 	}

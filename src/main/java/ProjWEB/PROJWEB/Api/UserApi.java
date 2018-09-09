@@ -13,12 +13,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import ProjWEB.PROJWEB.Domain.Tag;
 import ProjWEB.PROJWEB.Domain.User;
 import ProjWEB.PROJWEB.Domain.Dto.UserChangePasswordDto;
 import ProjWEB.PROJWEB.Domain.Dto.UserLoginDto;
 import ProjWEB.PROJWEB.Domain.Dto.UserLoginResponse;
 import ProjWEB.PROJWEB.Service.MailService;
+import ProjWEB.PROJWEB.Service.StatisticService;
 import ProjWEB.PROJWEB.Service.UserService;
+import ProjWEB.PROJWEB.Service.Impl.StatisticServiceimpl;
 import ProjWEB.PROJWEB.Service.Impl.UserServiceImpl;
 
 @Path("/users")
@@ -26,6 +29,7 @@ public class UserApi {
 	
 	private UserService userService = new UserServiceImpl();
 	private MailService mailService = new MailService();
+	private StatisticService statisticService = new StatisticServiceimpl();
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -65,6 +69,14 @@ public class UserApi {
 	public boolean delete(@PathParam("userId") long userId) throws SQLException {
 		return userService.deleteUser(userId);
 	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/forbidAccess/{userId}")
+	public void forbidAccess(@PathParam("userId") long userId) throws SQLException {
+		System.out.println(userId);
+	}
+	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/becomeSeller/{userId}")
@@ -83,6 +95,29 @@ public class UserApi {
 	@Path("/updatePaymentCard")
 	public User updatePaymentCard(User user) throws SQLException {
 		return userService.editUser(user);
+	}
+	/*
+	 * statistic
+	 */
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/categoryStatistic")
+	public List<Tag> categoryStatistic() throws SQLException {
+		return statisticService.categoryStatistic();
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/userStatisitc")
+	public boolean userStatisitc() throws SQLException {
+		return userService.adminAddOperater(0);
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/resolutionStatistic")
+	public boolean resolutionStatistic() throws SQLException {
+		return userService.adminAddOperater(0);
 	}
 	
 }
