@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
 
 import ProjWEB.PROJWEB.Domain.Tag;
 import ProjWEB.PROJWEB.Domain.User;
+import ProjWEB.PROJWEB.Domain.Dto.ResolutionStatisticDto;
 import ProjWEB.PROJWEB.Domain.Dto.UserChangePasswordDto;
 import ProjWEB.PROJWEB.Domain.Dto.UserLoginDto;
 import ProjWEB.PROJWEB.Domain.Dto.UserLoginResponse;
@@ -116,8 +117,8 @@ public class UserApi {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/resolutionStatistic")
-	public boolean resolutionStatistic() throws SQLException {
-		return userService.adminAddOperater(0);
+	public List<ResolutionStatisticDto> resolutionStatistic() throws SQLException {
+		return statisticService.resolutionStatistic();
 	}
 	
 }

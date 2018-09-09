@@ -11,15 +11,17 @@ public class Resolution {
 	private String path;
 	private int price;
 	private String base64;
+	private int count;
 
     public Resolution() {}
 	
-	public Resolution(long id,long slikaId,String resolution,String path,int price) {
+	public Resolution(long id,long slikaId,String resolution,String path,int price,int count) {
 		this.id = id;
 		this.slikaId = slikaId;
 		this.resolution = resolution;
 		this.path = path;
 		this.price = price;
+		this.count = count;
 	}
 	
 	public long getId() {
@@ -63,9 +65,17 @@ public class Resolution {
 		this.price = price;
 	}
 	
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
 	@Override
 	public String toString() {
 		return "Resolution [id=" + id + ", slikaId=" + slikaId + ", resolution=" + resolution + ", path=" + path
-				+ ", price=" + price + ", base64=" + base64 + "]";
+				+ ", price=" + price + ", base64=" + base64 + ", count=" + count + "]";
 	}
 }
