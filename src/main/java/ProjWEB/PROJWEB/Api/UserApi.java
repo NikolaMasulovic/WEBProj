@@ -19,6 +19,7 @@ import ProjWEB.PROJWEB.Domain.Dto.ResolutionStatisticDto;
 import ProjWEB.PROJWEB.Domain.Dto.UserChangePasswordDto;
 import ProjWEB.PROJWEB.Domain.Dto.UserLoginDto;
 import ProjWEB.PROJWEB.Domain.Dto.UserLoginResponse;
+import ProjWEB.PROJWEB.Domain.Dto.UserStatisticDto;
 import ProjWEB.PROJWEB.Service.MailService;
 import ProjWEB.PROJWEB.Service.StatisticService;
 import ProjWEB.PROJWEB.Service.UserService;
@@ -109,9 +110,9 @@ public class UserApi {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/userStatisitc")
-	public boolean userStatisitc() throws SQLException {
-		return userService.adminAddOperater(0);
+	@Path("/userStatistic")
+	public List<UserStatisticDto> userStatisitc() throws SQLException {
+		return statisticService.userStatistic();
 	}
 	
 	@GET

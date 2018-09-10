@@ -34,7 +34,7 @@ public class UserDao {
 	public ArrayList<User> findAll() throws SQLException {
 		ArrayList<User> list = new ArrayList<>();
 		loadDB();
-		String sql = "SELECT * FROM webProjDB.User;";
+		String sql = "SELECT * FROM webProjDB.User WHERE deleted = 0;";
 		try {
 			rs = st.executeQuery(sql);
 			ResultSetMetaData rsmd = rs.getMetaData();
