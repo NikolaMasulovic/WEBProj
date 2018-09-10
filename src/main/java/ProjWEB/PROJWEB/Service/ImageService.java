@@ -33,5 +33,7 @@ public interface ImageService {
 	
 	public List<ImageUnapprovedDto> seeAllUnapproved() throws SQLException;
 	
+	public boolean approveImage(long imageId) throws SQLException;
+	
 	//public int saveTest(List<ImageSaveDto> dtos);
 }

@@ -252,5 +252,11 @@ public class ImageServiceImpl implements ImageService{
 		
 		return unapprovedDtos;
 	}
+
+	@Override
+	public boolean approveImage(long imageId) throws SQLException {
+		if(imageDao.approveImage(imageId) > 0) return true;
+		return false;
+	}
 	
 }

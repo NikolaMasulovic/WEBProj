@@ -98,4 +98,11 @@ public class ImageApi {
 	public List<ImageUnapprovedDto> seeAllUnapproved() throws SQLException {
 		return imageService.seeAllUnapproved();
 	}
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/approveImage/{imageId}")
+	public Response approveImage(@PathParam("imageId") long imageId) throws SQLException {
+		System.out.println(imageId);
+		return Response.status(200).type("text/plain").entity(imageService.approveImage(imageId)).build();
+	}
 }

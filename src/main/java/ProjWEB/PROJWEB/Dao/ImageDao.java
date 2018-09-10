@@ -118,6 +118,21 @@ public class ImageDao {
 		}
 		return res;
 	}
+	public int approveImage(long imageId) throws SQLException {
+		loadDB();
+		int res = 0;
+		String sql = "UPDATE webProjDB.slika SET approved = 1 WHERE id = "+imageId+";";
+		System.out.println(sql);
+		try {
+			res = st.executeUpdate(sql);
+		}catch(SQLException ex) {
+			System.out.println("SQL ERROR::UPDATE APPROVED");
+		}finally {
+			st.close();
+			con.close();
+		}
+		return res;
+	}
 	
 	public ArrayList<Image> findAllByUserId(long user,int Isapproved) throws SQLException {
 		ArrayList<Image> list = new ArrayList<>();
