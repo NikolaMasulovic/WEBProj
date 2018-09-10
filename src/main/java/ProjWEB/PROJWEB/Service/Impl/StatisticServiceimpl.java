@@ -60,7 +60,6 @@ public class StatisticServiceimpl implements StatisticService {
                 for (Resolution resolution4k : res4K) {
                 	count4K += resolution4k.getCount();
                 }
-			
 			}
 			userDto.setUser(user);
 			userDto.setCountHD(countHD);

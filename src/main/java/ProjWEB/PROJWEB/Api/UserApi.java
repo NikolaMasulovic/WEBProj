@@ -75,8 +75,8 @@ public class UserApi {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/forbidAccess/{userId}")
-	public void forbidAccess(@PathParam("userId") long userId) throws SQLException {
-		System.out.println(userId);
+	public Response forbidAccess(@PathParam("userId") long userId) throws SQLException {
+		return Response.status(200).type("text/plain").entity(userService.forbidAccess(userId)).build();
 	}
 	
 	@GET

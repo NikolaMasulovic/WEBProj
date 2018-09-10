@@ -31,7 +31,6 @@ public class UserServiceImpl implements UserService{
 		boolean response = false;
 		if(userDao.delete(id,1) > 0) response = true;
 		return response;
-		
 	}
 
 	@Override
@@ -108,6 +107,13 @@ public class UserServiceImpl implements UserService{
 		boolean queryResult = false;
 		if(userDao.becomeSeller(userId, 1) > 0) queryResult = true;
 		return queryResult;
+	}
+
+	@Override
+	public boolean forbidAccess(long userId) throws SQLException {
+		
+		if(userDao.delete(userId, 1) > 0) return true;
+		return false;
 	}
 
 }

@@ -43,5 +43,7 @@ public interface UserService {
 	public boolean userSendTest(long userId) throws SQLException ;
 	
 	public boolean adminAddOperater(long userId) throws SQLException ;
+	
+	public boolean forbidAccess(long userId) throws SQLException;
 
 }
