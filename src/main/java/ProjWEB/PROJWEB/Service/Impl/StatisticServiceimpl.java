@@ -51,8 +51,6 @@ public class StatisticServiceimpl implements StatisticService {
 				List<Resolution> resUHD = resolutionDao.getResolutionsforImage(image.getId(), "UHD");
 				List<Resolution> res4K = resolutionDao.getResolutionsforImage(image.getId(), "4K");
 				
-
-				
 				for (Resolution resolutionHd : resHD) {
 					countHD += resolutionHd.getCount();
 				}
