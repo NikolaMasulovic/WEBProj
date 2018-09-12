@@ -46,20 +46,23 @@ public class ImageServiceImpl implements ImageService{
 	public List<Image> findAllImages() throws SQLException {
 		List<Image> forretrun = new ArrayList<>();
 		List<Image> forretrun1 = imageDao.findAll();
-//		BufferedImage imagefile = null;
-//		for (Image image : forretrun1) {
-//				try {
-//					imagefile = ImageIO.read(new File(image.getPath()));
-//				} catch (IOException e) {
-//					// TODO Auto-generated catch block
-//					System.out.println("GETTING IMAGE FROM FILE ERROR::");
-//					e.printStackTrace();
-//					continue;
-//				}
+		BufferedImage imagefile = null;
+		for (Image image : forretrun1) {
+				try {
+					imagefile = ImageIO.read(new File(image.getPath()));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					System.out.println("GETTING IMAGE FROM FILE ERROR::");
+					e.printStackTrace();
+					continue;
+				}
+				String url64 = "data:image/jpeg;base64,"+ImageUtils.base64FromImage(imagefile);
+				image.setUrl(url64);
 //				image.setUrl(ImageUtils.base64FromImage(imagefile));
-//				forretrun.add(image);
-//		}
-		return forretrun1;
+//				image.setUrl("data:image/jpeg;base64,"+ImageUtils.base64FromImage(imagefile));
+				forretrun.add(image);
+		}
+		return forretrun;
 	}
 
 	/*

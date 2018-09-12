@@ -31,7 +31,7 @@ public class ImageDao {
 	public ArrayList<Image> findAll() throws SQLException {
 		ArrayList<Image> list = new ArrayList<>();
 		loadDB();
-		String sql = "SELECT * FROM webProjDB.slika;";
+		String sql = "SELECT * FROM webProjDB.slika WHERE approved = 1;";
 		try {
 			rs = st.executeQuery(sql);
 			ResultSetMetaData rsmd = rs.getMetaData();
