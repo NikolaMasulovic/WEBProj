@@ -116,4 +116,10 @@ public class UserServiceImpl implements UserService{
 		return false;
 	}
 
+	@Override
+	public boolean uploadDailyAndWeekly(User user) throws SQLException {
+		if(userDao.updateDaily(user) > 0) return true;
+		return false;
+	}
+
 }

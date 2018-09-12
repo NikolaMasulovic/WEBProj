@@ -98,6 +98,12 @@ public class UserApi {
 	public User updatePaymentCard(User user) throws SQLException {
 		return userService.editUser(user);
 	}
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/updateDaily")
+	public Response updateDaily(User user) throws SQLException {
+		return Response.status(200).type("text/plain").entity(userService.uploadDailyAndWeekly(user)).build();
+	}
 	/*
 	 * statistic
 	 */
@@ -121,5 +127,4 @@ public class UserApi {
 	public List<ResolutionStatisticDto> resolutionStatistic() throws SQLException {
 		return statisticService.resolutionStatistic();
 	}
-	
 }

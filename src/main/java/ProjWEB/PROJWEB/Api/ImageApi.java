@@ -77,6 +77,13 @@ public class ImageApi {
 	
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/saveSingleImage")
+	public Response saveSingleImage(SaveTestDto saveTestDto) throws SQLException {
+		return Response.status(200).type("text/plain").entity(imageService.doTest(saveTestDto)).build();
+	}
+	
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/saveResolution")
 	public void saveResolution(Resolution resolution) throws SQLException {

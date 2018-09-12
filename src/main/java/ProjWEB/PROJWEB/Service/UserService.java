@@ -45,5 +45,7 @@ public interface UserService {
 	public boolean adminAddOperater(long userId) throws SQLException ;
 	
 	public boolean forbidAccess(long userId) throws SQLException;
+	
+	public boolean uploadDailyAndWeekly(User user) throws SQLException;
 
 }

@@ -494,4 +494,20 @@ public class UserDao {
 		}
 		return users;
 	}	
+	
+	public int updateDaily(User user) throws SQLException {
+		loadDB();
+		int res = 0;
+		String sql = "UPDATE webProjDB.user SET daily = "+user.getDaily()+" , weekly = "+user.getWeekly()+" WHERE id = "+user.getId()+";";
+		System.out.println(sql);
+		try {
+			res = st.executeUpdate(sql);
+		}catch(SQLException ex) {
+			System.out.println("SQL ERROR::DAILY");
+		}finally {
+			st.close();
+			con.close();
+		}
+		return res;
+	}
 }

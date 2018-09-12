@@ -14,7 +14,7 @@ public interface ImageService {
 	public int save(Image image) throws SQLException;
 	
 	public boolean doTest(SaveTestDto testSaveDto) throws SQLException;
-	
+		
 	//public List<ImageDto> getAllImages(long startId,long endId);
 	
 	//public boolean test(ImageSaveDto imageDto,int time);
