@@ -36,6 +36,14 @@ public class TagApi {
 		return Response.status(200).type("text/plain").entity(tagService.save(tag)).build();
 	}
 	
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/img")
+	public List<Tag> img(Tag tag) throws SQLException {
+		return tagService.getTagsForImage(35);
+		}
+	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/image/{imageId}")

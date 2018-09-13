@@ -14,20 +14,24 @@ import javax.ws.rs.core.Response;
 
 import ProjWEB.PROJWEB.Domain.Image;
 import ProjWEB.PROJWEB.Domain.Resolution;
+import ProjWEB.PROJWEB.Domain.Tag;
 import ProjWEB.PROJWEB.Domain.Dto.BuyImageDto;
 import ProjWEB.PROJWEB.Domain.Dto.ImagePageableDto;
 import ProjWEB.PROJWEB.Domain.Dto.ImageUnapprovedDto;
 import ProjWEB.PROJWEB.Domain.Dto.SaveTestDto;
 import ProjWEB.PROJWEB.Service.ImageService;
 import ProjWEB.PROJWEB.Service.ResolutionService;
+import ProjWEB.PROJWEB.Service.TagService;
 import ProjWEB.PROJWEB.Service.Impl.ImageServiceImpl;
 import ProjWEB.PROJWEB.Service.Impl.ResolutionServiceImpl;
+import ProjWEB.PROJWEB.Service.Impl.TagServiceImpl;
 
 @Path("/images")
 public class ImageApi {
 	
 	private ImageService imageService = new ImageServiceImpl();
 	private ResolutionService resolutionService = new ResolutionServiceImpl();
+	private TagService tagService = new TagServiceImpl();
 
 	
 	@GET
@@ -107,6 +111,22 @@ public class ImageApi {
 	public List<ImageUnapprovedDto> seeAllUnapproved() throws SQLException {
 		return imageService.seeAllUnapproved();
 	}
+	
+//	@GET
+//	@Produces(MediaType.APPLICATION_JSON)
+//	@Path("/tagImage/{imageId}/tags")
+//	public List<Tag> getTagsForImage(@PathParam("imageId") long imageId) throws SQLException {
+//		return tagService.getTagsForImage(imageId);
+//	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/tagImage/{imageId}")
+	public List<Tag> getTagsForImage(@PathParam("imageId") long imageId) throws SQLException {
+		System.out.println(imageId);
+		return tagService.getTagsForImage(imageId);
+	}
+	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/approveImage/{imageId}")
