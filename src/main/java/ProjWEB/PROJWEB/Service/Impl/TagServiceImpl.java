@@ -1,6 +1,7 @@
 package ProjWEB.PROJWEB.Service.Impl;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import ProjWEB.PROJWEB.Dao.TagDao;
@@ -21,6 +22,27 @@ public class TagServiceImpl implements TagService{
 		boolean result = false;
 		if(tagDao.save(tag.getName()) > 0) result = true;
 		return result;
+	}
+
+	@Override
+	public List<Tag> getTagsForImage(long imageId) {
+		
+		List<Tag> tags = new ArrayList<>();
+		List<Long> ids = new ArrayList<>();
+		
+		try {
+			ids = tagDao.getTagBySlikaId(imageId);
+			for (Long long1 : ids) {
+				List<Tag> tg = tagDao.findTagById(long1);
+				for (Tag tag : tg) {
+					tags.add(tag);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return tags;
 	}
 
 }

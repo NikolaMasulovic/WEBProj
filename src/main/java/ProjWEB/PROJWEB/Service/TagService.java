@@ -10,5 +10,8 @@ public interface TagService {
 	public List<Tag> findAllTags() throws SQLException;
 	
 	public boolean save(Tag tag) throws SQLException;
+	
+	public List<Tag> getTagsForImage(long imageId);
+
 
 }
