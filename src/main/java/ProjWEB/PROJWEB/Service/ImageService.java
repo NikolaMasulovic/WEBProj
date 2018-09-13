@@ -5,11 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ProjWEB.PROJWEB.Domain.Image;
+import ProjWEB.PROJWEB.Domain.Dto.ImagePageableDto;
 import ProjWEB.PROJWEB.Domain.Dto.ImageUnapprovedDto;
 import ProjWEB.PROJWEB.Domain.Dto.SaveTestDto;
 public interface ImageService {
 
-	public List<Image> findAllImages() throws SQLException ;
+	public ImagePageableDto findAllImages(int start) throws SQLException ;
    
 	public int save(Image image) throws SQLException;
 	

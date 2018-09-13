@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
 import ProjWEB.PROJWEB.Domain.Image;
 import ProjWEB.PROJWEB.Domain.Resolution;
 import ProjWEB.PROJWEB.Domain.Dto.BuyImageDto;
+import ProjWEB.PROJWEB.Domain.Dto.ImagePageableDto;
 import ProjWEB.PROJWEB.Domain.Dto.ImageUnapprovedDto;
 import ProjWEB.PROJWEB.Domain.Dto.SaveTestDto;
 import ProjWEB.PROJWEB.Service.ImageService;
@@ -31,8 +32,9 @@ public class ImageApi {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Image> getAll() throws SQLException{
-		return imageService.findAllImages();
+	@Path("/all/{start}")
+	public ImagePageableDto getAll(@PathParam("start") int start) throws SQLException{
+		return imageService.findAllImages(start);
 	}
 	
 	@POST
