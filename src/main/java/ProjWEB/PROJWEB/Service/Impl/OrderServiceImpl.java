@@ -81,8 +81,32 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public OrderDto getHistoryForUser(long userId) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+    OrderDto dto = new OrderDto();
+		
+		/*
+		 * setovanje parametara za odgovor
+		 */
+		List<Image> dtoImages = new ArrayList<>();
+		User user = new User();
+		user.setId(userId);
+		
+		dto.setUser(user);
+		dto.setImages(dtoImages);
+		
+		//lista placeinh ordera svaki ima jednu ili vise slika
+		ArrayList<Order> orderList = orderDao.findByUserId(userId, "paid");
+		for (Order order : orderList) {
+			
+			ArrayList<Order_image> orderImageList = orderDao.findByOrderId(order.getId());//za svaki order uzmem slike vezane za taj order
+			for (Order_image order_image : orderImageList) {
+				ArrayList<Image> images = imageDao.findImageById(order_image.getImageId());
+				Image image = images.get(0);
+				String resolutionDto = resolutionService.getResolutionForImage(order_image.getImageId(), order_image.getResolution());
+				image.setUrl(resolutionDto);
+				dto.getImages().add(image);
+			}	
+		}
+		return dto;
 	}
 
 	@Override

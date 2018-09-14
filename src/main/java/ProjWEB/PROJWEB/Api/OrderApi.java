@@ -3,14 +3,14 @@ package ProjWEB.PROJWEB.Api;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import ProjWEB.PROJWEB.Domain.Order;
+import ProjWEB.PROJWEB.Domain.Dto.OrderDto;
 import ProjWEB.PROJWEB.Service.OrderService;
 import ProjWEB.PROJWEB.Service.Impl.OrderServiceImpl;
 
@@ -26,12 +26,32 @@ public class OrderApi {
 		return orderService.findAll();
 	}
 	
-//	@POST
+	@GET
+	@Path("/{userId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public OrderDto findByUserId(@PathParam("userId") long userId) throws SQLException {
+		return orderService.findByUserId(userId);
+	}
+	
+	@GET
+	@Path("/history/{userId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public OrderDto getHistoryForUser(@PathParam("userId") long userId) throws SQLException {
+		return orderService.getHistoryForUser(userId);
+	}
+	
+//	@GET
+//	@Path("/cart/{userId}")
 //	@Produces(MediaType.APPLICATION_JSON)
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	@Path("/login")
-//	public UserLoginResponse login(UserLoginDto user) throws SQLException {
-//		System.out.println("LOGIN::");
-//		return userService.login(user);
+//	public OrderDto getCart(@PathParam("userId") long userId) throws SQLException {
+//		return orderService.getHistoryForUser(userId);
 //	}
+	
+	@GET
+	@Path("/payCart/{userId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Order payCart(@PathParam("userId") long userId) throws SQLException {
+		return orderService.payCart(userId);
+	}
+	
 }
