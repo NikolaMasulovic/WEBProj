@@ -112,13 +112,6 @@ public class ImageApi {
 		return imageService.seeAllUnapproved();
 	}
 	
-//	@GET
-//	@Produces(MediaType.APPLICATION_JSON)
-//	@Path("/tagImage/{imageId}/tags")
-//	public List<Tag> getTagsForImage(@PathParam("imageId") long imageId) throws SQLException {
-//		return tagService.getTagsForImage(imageId);
-//	}
-	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/tagImage/{tagId}")
