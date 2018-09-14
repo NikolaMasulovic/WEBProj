@@ -19,6 +19,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import ProjWEB.PROJWEB.Dao.ImageDao;
+import ProjWEB.PROJWEB.Dao.TagDao;
 import ProjWEB.PROJWEB.Dao.UserDao;
 import ProjWEB.PROJWEB.Domain.Image;
 import ProjWEB.PROJWEB.Domain.Resolution;
@@ -36,6 +37,7 @@ public class ImageServiceImpl implements ImageService{
 	private ImageUtils imageUtils = new ImageUtils();
 	private ResolutionService resolutionService = new ResolutionServiceImpl();
 	private UserDao userDao = new UserDao();
+	private TagDao tagDao = new TagDao();
 
 
 	/*
@@ -129,9 +131,45 @@ public class ImageServiceImpl implements ImageService{
 
 	@Override
 	public List<Image> getImagesByTag(long tagId, int page) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<Image> images = new ArrayList<>();
+		List<Long> ids = new ArrayList<>();
+		
+		try {
+			ids = tagDao.getImagesByTagId(tagId);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		for (Long l : ids) {
+			List<Image> imgs = new ArrayList<>();
+			try {
+				imgs = imageDao.findImageById(l);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			for (Image i : imgs) {
+				images.add(i);
+			}
+		}
+		
+		BufferedImage imageB = null;
+		for (Image im : images) {
+			try {
+				imageB = ImageIO.read(new File(im.getPath()));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			String base = ImageUtils.base64FromImage(imageB);
+			im.setUrl("data:image/png;base64,"+base);
+		}
+		return images;
 	}
+		
+	//}
 	
 	/*
 	 * dodaje watermark

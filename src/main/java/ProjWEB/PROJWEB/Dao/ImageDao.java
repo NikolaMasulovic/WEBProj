@@ -242,4 +242,45 @@ public class ImageDao {
 		}
 		return list;
 	}
+	
+	public ArrayList<Image> findImageById(long sid) throws SQLException {
+		ArrayList<Image> list = new ArrayList<>();
+		loadDB();
+		String sql = "SELECT * FROM webProjDB.slika WHERE id = "+sid+";";
+		try {
+			rs = st.executeQuery(sql);
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int columnsNumber = rsmd.getColumnCount();
+			while(rs.next()) {
+				for (int i = 1; i <= columnsNumber; i++) {
+			        if (i > 1) System.out.print(",  ");
+			        String columnValue = rs.getString(i);
+			        System.out.print(columnValue);
+			    }
+				long id = Long.parseLong(rs.getString("id"));
+				String datePublished = rs.getString("datePublished");
+				int price = Integer.parseInt(rs.getString("price"));
+				int numOfCopies = rs.getInt("numOfCopiesSelled");
+				String name = rs.getString("name");
+				String place = rs.getString("place");
+				String description = rs.getString("description");
+				long userId = Long.parseLong(rs.getString("userId"));
+				String path = rs.getString("path");
+				int approved = Integer.parseInt(rs.getString("approved"));
+				
+				Image img = new Image(id,numOfCopies,datePublished,price,name,place,description,userId,path,approved);
+				list.add(img);
+				System.out.println();
+			}
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}finally {
+			rs.close();
+			st.close();
+			con.close();
+		}
+		return list;
+	}
+	
+	
 }

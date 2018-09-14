@@ -43,7 +43,6 @@ public class TagApi {
 	@Path("/images/{imageId}")
 	public List<Tag> getTagsForImage(@PathParam("imageId") long imageId) throws SQLException{
 		List<Tag> tags = tagService.getTagsForImage(imageId);
-		System.out.println("frfr");
 		return tags;
 	}
 	

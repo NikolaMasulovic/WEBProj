@@ -121,10 +121,9 @@ public class ImageApi {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/tagImage/{imageId}")
-	public List<Tag> getTagsForImage(@PathParam("imageId") long imageId) throws SQLException {
-		System.out.println(imageId);
-		return tagService.getTagsForImage(imageId);
+	@Path("/tagImage/{tagId}")
+	public List<Image> getTagsForImage(@PathParam("tagId") long tagId) throws SQLException {
+		return imageService.getImagesByTag(tagId,0);
 	}
 	
 	@GET
