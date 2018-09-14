@@ -25,7 +25,9 @@ public class TagApi {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Tag> getUsers() throws SQLException{
-		return tagService.findAllTags();
+		List<Tag> tags = tagService.findAllTags();
+		System.out.println("frfr");
+		return tags;
 	}
 	
 	@POST
@@ -36,18 +38,13 @@ public class TagApi {
 		return Response.status(200).type("text/plain").entity(tagService.save(tag)).build();
 	}
 	
-	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Path("/img")
-	public List<Tag> img(Tag tag) throws SQLException {
-		return tagService.getTagsForImage(35);
-		}
-	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/image/{imageId}")
+	@Path("/images/{imageId}")
 	public List<Tag> getTagsForImage(@PathParam("imageId") long imageId) throws SQLException{
-		return tagService.getTagsForImage(imageId);
+		List<Tag> tags = tagService.getTagsForImage(imageId);
+		System.out.println("frfr");
+		return tags;
 	}
+	
 }
