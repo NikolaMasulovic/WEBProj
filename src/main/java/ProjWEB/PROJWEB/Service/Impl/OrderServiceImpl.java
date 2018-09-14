@@ -111,8 +111,20 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public Order payCart(long userId) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		Order order = new Order();
+		order.setUserId(userId);
+		int updateResult = orderDao.payOrder(userId);
+		if(updateResult > 0) {
+			long saveResult = orderDao.saveBlankOrder(order);
+			System.out.println("SAVE RES:"+saveResult);
+			if(saveResult > 0) {
+				order.setId(saveResult);
+				order.setUserId(userId);
+				//order.setOrderDate(orderDate);
+			}
+		}
+		System.out.println(updateResult);
+		return order;
 	}
 
 	@Override
