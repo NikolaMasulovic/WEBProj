@@ -3,6 +3,7 @@ package ProjWEB.PROJWEB.Api;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.mail.MessagingException;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -50,7 +51,7 @@ public class OrderApi {
 	@GET
 	@Path("/payCart/{userId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Order payCart(@PathParam("userId") long userId) throws SQLException {
+	public Order payCart(@PathParam("userId") long userId) throws SQLException, MessagingException {
 		return orderService.payCart(userId);
 	}
 	

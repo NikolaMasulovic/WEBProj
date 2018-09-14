@@ -17,8 +17,8 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import ProjWEB.PROJWEB.Domain.Image;
 import ProjWEB.PROJWEB.Domain.Resolution;
-import ProjWEB.PROJWEB.Domain.Dto.BuyResolutionDto;
 
 public class MailService {
 	
@@ -53,6 +53,36 @@ public class MailService {
 		        Multipart multipartMsg = new MimeMultipart();
 		        
 		        for (Resolution res : list) {
+		        	addAttachment(res.getPath(), msg, multipartMsg);
+				}
+		        
+		        
+		        
+				Transport.send(msg);
+
+				System.out.println("MAIL SENT::Done");
+
+			} catch (MessagingException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	    
+	    public void sendWithAttachmentImage(String to,String title,List<Image> list) throws MessagingException {
+
+			try {
+
+		        SmtpAuthenticator authentication = new SmtpAuthenticator();
+		        javax.mail.Message msg = new MimeMessage(Session
+		                            .getDefaultInstance(this.getMailServerProperties(), authentication));
+		        msg.setFrom(new InternetAddress("nikolamas73@gmail.com"));
+		        msg.setRecipients(Message.RecipientType.TO,
+					InternetAddress.parse("nikola.masulovic@netcast.rs"));
+		        msg.setSubject("Testing Subject");
+		        msg.setText("Dear Mail Crawler,"
+					+ "\n\n No spam to my email, please!");
+		        Multipart multipartMsg = new MimeMultipart();
+		        
+		        for (Image res : list) {
 		        	addAttachment(res.getPath(), msg, multipartMsg);
 				}
 		        

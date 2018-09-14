@@ -4,15 +4,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.mail.MessagingException;
+
 import ProjWEB.PROJWEB.Dao.ImageDao;
 import ProjWEB.PROJWEB.Dao.OrderDao;
 import ProjWEB.PROJWEB.Domain.Image;
 import ProjWEB.PROJWEB.Domain.Order;
 import ProjWEB.PROJWEB.Domain.Order_image;
-import ProjWEB.PROJWEB.Domain.Resolution;
 import ProjWEB.PROJWEB.Domain.User;
 import ProjWEB.PROJWEB.Domain.Dto.OrderDto;
 import ProjWEB.PROJWEB.Domain.Dto.OrderSaveDto;
+import ProjWEB.PROJWEB.Service.MailService;
 import ProjWEB.PROJWEB.Service.OrderService;
 import ProjWEB.PROJWEB.Service.ResolutionService;
 
@@ -21,6 +23,7 @@ public class OrderServiceImpl implements OrderService {
 	private OrderDao orderDao = new OrderDao();
 	private ResolutionService resolutionService = new ResolutionServiceImpl();
 	private ImageDao imageDao = new ImageDao();
+	private MailService mailService = new MailService();
 
 	@Override
 	public List<Order> findAll() {
@@ -110,7 +113,26 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Order payCart(long userId) throws SQLException {
+	public Order payCart(long userId) throws SQLException, MessagingException {
+		
+		
+		ArrayList<Order> orderUnpaidList = orderDao.findByUserId(userId, "unpaid");
+		Order orderUnpaid = orderUnpaidList.get(0);
+		
+		
+       ArrayList<Order_image> orderImageList = orderDao.findByOrderId(orderUnpaid.getId());
+       ArrayList<Image> imagesForMail = new ArrayList<>();
+       
+		
+		for (Order_image order_image : orderImageList) {
+			ArrayList<Image> images = imageDao.findImageById(order_image.getImageId());
+			Image image = images.get(0);
+			String resolutionDto = resolutionService.getResolutionForImage(order_image.getImageId(), order_image.getResolution());
+			image.setUrl(resolutionDto);
+			imagesForMail.add(image);
+		}
+		
+		mailService.sendWithAttachmentImage("mmasulovic17@raf.rs", "proba", imagesForMail);
 		Order order = new Order();
 		order.setUserId(userId);
 		int updateResult = orderDao.payOrder(userId);

@@ -96,8 +96,9 @@ public class ResolutionServiceImpl implements ResolutionService {
 		String resolu = "";
 		try {
 			list =resolutionDao.getResolutionsforImage(imageId, res);
+			Resolution resolution = list.get(0);
 			BufferedImage img = null; 
-		    img = ImageIO.read(new File("/Users/mac/Desktop/netcastlogo.jpg"));
+		    img = ImageIO.read(new File(resolution.getPath()));
 			String base = ImageUtils.base64FromImage(img);
 			resolu = "data:image/png;base64,"+base;
 		

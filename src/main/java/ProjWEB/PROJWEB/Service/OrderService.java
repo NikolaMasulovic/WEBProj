@@ -3,6 +3,8 @@ package ProjWEB.PROJWEB.Service;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.mail.MessagingException;
+
 import ProjWEB.PROJWEB.Domain.Order;
 import ProjWEB.PROJWEB.Domain.Dto.OrderDto;
 import ProjWEB.PROJWEB.Domain.Dto.OrderSaveDto;
@@ -17,7 +19,7 @@ public List<Order> findAll();
 	
 	public OrderDto getHistoryForUser(long userId) throws SQLException;
 	
-	public Order payCart(long userId) throws SQLException;
+	public Order payCart(long userId) throws SQLException, MessagingException ;
 	
 	public Order getCart(long userId) throws SQLException;
 	
