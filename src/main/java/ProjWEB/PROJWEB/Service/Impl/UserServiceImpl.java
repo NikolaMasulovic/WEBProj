@@ -5,14 +5,17 @@ import java.util.List;
 
 import ProjWEB.PROJWEB.Dao.UserDao;
 import ProjWEB.PROJWEB.Domain.User;
+import ProjWEB.PROJWEB.Domain.Dto.OrderDto;
 import ProjWEB.PROJWEB.Domain.Dto.UserChangePasswordDto;
 import ProjWEB.PROJWEB.Domain.Dto.UserLoginDto;
 import ProjWEB.PROJWEB.Domain.Dto.UserLoginResponse;
+import ProjWEB.PROJWEB.Service.OrderService;
 import ProjWEB.PROJWEB.Service.UserService;
 
 public class UserServiceImpl implements UserService{
 	
 	private UserDao userDao = new UserDao();
+	private OrderService orderService = new OrderServiceImpl();
 
 	@Override
 	public List<User> getAllUsers() throws SQLException {
@@ -78,6 +81,9 @@ public class UserServiceImpl implements UserService{
 		UserLoginResponse userResponse = new UserLoginResponse();
 		User u = userDao.login(user);
 		userResponse.setUser(u);
+		OrderDto orderDto = orderService.findByUserId(u.getId());
+		userResponse.setOrder(orderDto);
+		
 		return userResponse;
 	}
 

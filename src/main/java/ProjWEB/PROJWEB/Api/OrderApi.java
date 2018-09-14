@@ -11,8 +11,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import ProjWEB.PROJWEB.Domain.Order;
-import ProjWEB.PROJWEB.Domain.Dto.UserLoginDto;
-import ProjWEB.PROJWEB.Domain.Dto.UserLoginResponse;
 import ProjWEB.PROJWEB.Service.OrderService;
 import ProjWEB.PROJWEB.Service.Impl.OrderServiceImpl;
 

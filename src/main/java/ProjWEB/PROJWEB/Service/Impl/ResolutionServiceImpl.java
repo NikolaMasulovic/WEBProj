@@ -89,4 +89,25 @@ public class ResolutionServiceImpl implements ResolutionService {
 		}	
 		return true;
 	}
+	@Override
+	public String getResolutionForImage(long imageId, String res) {
+		List<Resolution> list = new ArrayList<>();
+		
+		String resolu = "";
+		try {
+			list =resolutionDao.getResolutionsforImage(imageId, res);
+			BufferedImage img = null; 
+		    img = ImageIO.read(new File("/Users/mac/Desktop/netcastlogo.jpg"));
+			String base = ImageUtils.base64FromImage(img);
+			resolu = "data:image/png;base64,"+base;
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return resolu;
+	}
 }
