@@ -73,7 +73,7 @@ public class UserDao {
 		return list;
 	}
 	public long save(User user) throws SQLException {
-		loadDB();
+		
 		long id =0;
 		/*
 		 * Prvo provera za username,ako vec postoji ne moze
@@ -83,12 +83,13 @@ public class UserDao {
 			System.out.println("NO REGISTER::USERNAME IS ALREADY TAKEN");
 			return 0;
 		}else {
+	    loadDB();
 		int res = 0;
 		String sql ="";
         try {
             con.setAutoCommit(false);
             System.out.println(user);
-            sql = "insert into User (username, password, email, country, role, daily, weekly,companyId,deleted,rate,version)"
+            sql = "insert into webProjDB.user (username, password, email, country, role, daily, weekly,companyId,deleted,rate,version)"
                     + "values ('" + user.getUsername() + "','" + user.getPassword() + "','" + user.getEmail() + "','" +
             		user.getCountry() + "',"+user.getRole()+ ",'"+ String.valueOf(user.getDaily()) + "','"+String.valueOf(user.getWeekly())+"',"+user.getCompanyId()+","+user.getDeleted()+",0,0)";
             res = st.executeUpdate(sql);
