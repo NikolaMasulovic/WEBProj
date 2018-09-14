@@ -11,6 +11,7 @@ import ProjWEB.PROJWEB.Dao.OrderDao;
 import ProjWEB.PROJWEB.Domain.Image;
 import ProjWEB.PROJWEB.Domain.Order;
 import ProjWEB.PROJWEB.Domain.Order_image;
+import ProjWEB.PROJWEB.Domain.Resolution;
 import ProjWEB.PROJWEB.Domain.User;
 import ProjWEB.PROJWEB.Domain.Dto.OrderDto;
 import ProjWEB.PROJWEB.Domain.Dto.OrderSaveDto;
@@ -74,8 +75,8 @@ public class OrderServiceImpl implements OrderService {
 		for (Order_image order_image : orderImageList) {
 			ArrayList<Image> images = imageDao.findImageById(order_image.getImageId());
 			Image image = images.get(0);
-			String resolutionForImage = resolutionService.getResolutionForImage(order_image.getImageId(), order_image.getResolution());
-			image.setUrl(resolutionForImage);
+			Resolution resolutionForImage = resolutionService.getResolutionForImage(order_image.getImageId(), order_image.getResolution());
+			image.setUrl(resolutionForImage.getBase64());
 			dto.getImages().add(image);
 		}
 				
@@ -104,8 +105,8 @@ public class OrderServiceImpl implements OrderService {
 			for (Order_image order_image : orderImageList) {
 				ArrayList<Image> images = imageDao.findImageById(order_image.getImageId());
 				Image image = images.get(0);
-				String resolutionDto = resolutionService.getResolutionForImage(order_image.getImageId(), order_image.getResolution());
-				image.setUrl(resolutionDto);
+				Resolution resolutionDto = resolutionService.getResolutionForImage(order_image.getImageId(), order_image.getResolution());
+				image.setUrl(resolutionDto.getBase64());
 				dto.getImages().add(image);
 			}	
 		}
@@ -123,16 +124,18 @@ public class OrderServiceImpl implements OrderService {
        ArrayList<Order_image> orderImageList = orderDao.findByOrderId(orderUnpaid.getId());
        ArrayList<Image> imagesForMail = new ArrayList<>();
        
-		
+		List<Resolution> resolutions = new ArrayList<>();
 		for (Order_image order_image : orderImageList) {
 			ArrayList<Image> images = imageDao.findImageById(order_image.getImageId());
 			Image image = images.get(0);
-			String resolutionDto = resolutionService.getResolutionForImage(order_image.getImageId(), order_image.getResolution());
-			image.setUrl(resolutionDto);
-			imagesForMail.add(image);
+			System.out.println("pre poziva");
+			Resolution resolutionDto = resolutionService.getResolutionForImage(order_image.getImageId(), order_image.getResolution());
+//			image.setUrl(resolutionDto);
+//			imagesForMail.add(image);
+			resolutions.add(resolutionDto);
 		}
 		
-		mailService.sendWithAttachmentImage("mmasulovic17@raf.rs", "proba", imagesForMail);
+		mailService.sendWithAttachment("mmasulovic17@raf.rs", "proba", resolutions);
 		Order order = new Order();
 		order.setUserId(userId);
 		int updateResult = orderDao.payOrder(userId);

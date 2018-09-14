@@ -19,6 +19,6 @@ public interface ResolutionService {
 	
 	public boolean saveTest(List<Resolution> resolutions,long imageId) throws SQLException;
 	
-	public String getResolutionForImage(long imageId, String res);
+	public Resolution getResolutionForImage(long imageId, String res);
 
 }

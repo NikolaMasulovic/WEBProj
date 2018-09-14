@@ -90,17 +90,20 @@ public class ResolutionServiceImpl implements ResolutionService {
 		return true;
 	}
 	@Override
-	public String getResolutionForImage(long imageId, String res) {
+	public Resolution getResolutionForImage(long imageId, String res) {
 		List<Resolution> list = new ArrayList<>();
 		
 		String resolu = "";
+		Resolution resolution = new Resolution();
 		try {
 			list =resolutionDao.getResolutionsforImage(imageId, res);
-			Resolution resolution = list.get(0);
+			resolution = list.get(0);
+			System.out.println("Ovde::::"+resolution);
 			BufferedImage img = null; 
 		    img = ImageIO.read(new File(resolution.getPath()));
 			String base = ImageUtils.base64FromImage(img);
 			resolu = "data:image/png;base64,"+base;
+			resolution.setBase64(resolu);
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -109,6 +112,6 @@ public class ResolutionServiceImpl implements ResolutionService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return resolu;
+		return resolution;
 	}
 }
