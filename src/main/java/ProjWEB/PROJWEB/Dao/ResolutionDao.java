@@ -163,5 +163,25 @@ public class ResolutionDao {
             con.close();
         }
         return result;
-}
+        }
+        public int update(Resolution res) throws SQLException{
+		
+		loadDB();
+		int result =0;
+        try {
+            con.setAutoCommit(false);
+            System.out.println(res);
+            String sql = "UPDATE webProjDB.resolutions SET Soldcount = "+res.getCount()+" where id = "+res.getId()+";";
+            result = st.executeUpdate(sql);
+            System.out.println("____SUCCESS");
+            con.commit();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            con.rollback();
+        } finally {
+            st.close();
+            con.close();
+        }
+        return result;
+        }
 }

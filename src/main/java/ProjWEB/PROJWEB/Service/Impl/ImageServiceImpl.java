@@ -23,9 +23,11 @@ import ProjWEB.PROJWEB.Dao.TagDao;
 import ProjWEB.PROJWEB.Dao.UserDao;
 import ProjWEB.PROJWEB.Domain.Image;
 import ProjWEB.PROJWEB.Domain.Resolution;
+import ProjWEB.PROJWEB.Domain.Tag;
 import ProjWEB.PROJWEB.Domain.User;
 import ProjWEB.PROJWEB.Domain.Dto.ImagePageableDto;
 import ProjWEB.PROJWEB.Domain.Dto.ImageUnapprovedDto;
+import ProjWEB.PROJWEB.Domain.Dto.ImageUploadDto;
 import ProjWEB.PROJWEB.Domain.Dto.SaveTestDto;
 import ProjWEB.PROJWEB.Service.ImageService;
 import ProjWEB.PROJWEB.Service.ImageUtils;
@@ -300,6 +302,43 @@ public class ImageServiceImpl implements ImageService{
 	public boolean approveImage(long imageId) throws SQLException {
 		if(imageDao.approveImage(imageId) > 0) return true;
 		return false;
+	}
+
+	@Override
+	public boolean uploadImage(ImageUploadDto imageUploadDto) throws SQLException {
+		String name = imageUploadDto.getName();
+		String description = imageUploadDto.getDescription();
+		List<Resolution> resolutions = imageUploadDto.getResolutions();
+		long userId = imageUploadDto.getUserId();
+		
+		ArrayList<User> u = userDao.findUserById(userId);
+		String folderName = u.get(0).getUsername();
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date date = new Date();
+		String datePublished = dateFormat.format(date);
+		System.out.println(dateFormat.format(date));
+		
+		
+		
+		Image img = new Image(0, 0, datePublished, 0, name, "", description,userId, "", 0);
+		img.setUrl(resolutions.get(0).getBase64());
+		int imageId =  save(img);
+		
+		for (Resolution resolution : resolutions) {
+			resolution.setSlikaId(imageId);
+			if(!resolutionService.save(resolution,folderName,imageUploadDto.getName())) {
+				return false;
+			}
+			System.out.println("Uspesno sacuvano.");	
+		}
+		
+		ArrayList<Tag> tags = tagDao.findTagById(2);
+		Tag tag = tags.get(0);
+		int tg = tagDao.saveTagImage(tag.getId(), imageId);
+		System.out.println("TAG::"+tg);
+		
+		return true;
 	}
 	
 }

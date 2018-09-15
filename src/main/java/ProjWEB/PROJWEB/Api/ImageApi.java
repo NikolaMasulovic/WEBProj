@@ -14,10 +14,10 @@ import javax.ws.rs.core.Response;
 
 import ProjWEB.PROJWEB.Domain.Image;
 import ProjWEB.PROJWEB.Domain.Resolution;
-import ProjWEB.PROJWEB.Domain.Tag;
 import ProjWEB.PROJWEB.Domain.Dto.BuyImageDto;
 import ProjWEB.PROJWEB.Domain.Dto.ImagePageableDto;
 import ProjWEB.PROJWEB.Domain.Dto.ImageUnapprovedDto;
+import ProjWEB.PROJWEB.Domain.Dto.ImageUploadDto;
 import ProjWEB.PROJWEB.Domain.Dto.SaveTestDto;
 import ProjWEB.PROJWEB.Service.ImageService;
 import ProjWEB.PROJWEB.Service.ResolutionService;
@@ -84,8 +84,8 @@ public class ImageApi {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/saveSingleImage")
-	public Response saveSingleImage(SaveTestDto saveTestDto) throws SQLException {
-		return Response.status(200).type("text/plain").entity(imageService.doTest(saveTestDto)).build();
+	public Response saveSingleImage(ImageUploadDto saveTestDto) throws SQLException {
+		return Response.status(200).type("text/plain").entity(imageService.uploadImage(saveTestDto)).build();
 	}
 	
 	@POST

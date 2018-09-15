@@ -201,5 +201,23 @@ public class TagDao {
 		}
 		return list;
 	}
-
+	
+	public int saveTagImage(long tagId,long imageId) throws SQLException {
+		loadDB();
+		int result =0;
+        try {
+            con.setAutoCommit(false);
+            String sql = "INSERT into webProjDB.slika_tag (slikaid,tagId) values ("+imageId+","+tagId+");";
+            result = st.executeUpdate(sql);
+            con.commit();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            con.rollback();
+            System.out.println("SQL ERROR::SAVE TAG");
+        } finally {
+            st.close();
+            con.close();
+        }
+        return result;
+	}
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import ProjWEB.PROJWEB.Domain.Image;
 import ProjWEB.PROJWEB.Domain.Dto.ImagePageableDto;
 import ProjWEB.PROJWEB.Domain.Dto.ImageUnapprovedDto;
+import ProjWEB.PROJWEB.Domain.Dto.ImageUploadDto;
 import ProjWEB.PROJWEB.Domain.Dto.SaveTestDto;
 public interface ImageService {
 
@@ -15,6 +16,9 @@ public interface ImageService {
 	public int save(Image image) throws SQLException;
 	
 	public boolean doTest(SaveTestDto testSaveDto) throws SQLException;
+	
+	public boolean uploadImage(ImageUploadDto imageUploadDto) throws SQLException;
+
 		
 	//public List<ImageDto> getAllImages(long startId,long endId);
 	

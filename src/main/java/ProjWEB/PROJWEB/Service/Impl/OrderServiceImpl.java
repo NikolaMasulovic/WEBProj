@@ -8,6 +8,7 @@ import javax.mail.MessagingException;
 
 import ProjWEB.PROJWEB.Dao.ImageDao;
 import ProjWEB.PROJWEB.Dao.OrderDao;
+import ProjWEB.PROJWEB.Dao.ResolutionDao;
 import ProjWEB.PROJWEB.Domain.Image;
 import ProjWEB.PROJWEB.Domain.Order;
 import ProjWEB.PROJWEB.Domain.Order_image;
@@ -25,6 +26,7 @@ public class OrderServiceImpl implements OrderService {
 	private ResolutionService resolutionService = new ResolutionServiceImpl();
 	private ImageDao imageDao = new ImageDao();
 	private MailService mailService = new MailService();
+	private ResolutionDao resolutionDao = new ResolutionDao();
 
 	@Override
 	public List<Order> findAll() {
@@ -128,10 +130,7 @@ public class OrderServiceImpl implements OrderService {
 		for (Order_image order_image : orderImageList) {
 			ArrayList<Image> images = imageDao.findImageById(order_image.getImageId());
 			Image image = images.get(0);
-			System.out.println("pre poziva");
 			Resolution resolutionDto = resolutionService.getResolutionForImage(order_image.getImageId(), order_image.getResolution());
-//			image.setUrl(resolutionDto);
-//			imagesForMail.add(image);
 			resolutions.add(resolutionDto);
 		}
 		
@@ -140,6 +139,10 @@ public class OrderServiceImpl implements OrderService {
 		order.setUserId(userId);
 		int updateResult = orderDao.payOrder(userId);
 		if(updateResult > 0) {
+			for (Resolution resolution : resolutions) {
+				resolution.setCount(resolution.getCount()+1);
+				resolutionDao.update(resolution);
+			}
 			long saveResult = orderDao.saveBlankOrder(order);
 			System.out.println("SAVE RES:"+saveResult);
 			if(saveResult > 0) {
