@@ -101,6 +101,46 @@ public class MailService {
 				throw new RuntimeException(e);
 			}
 		}
+	    public void sendMailSoldImages(String to,String title,List<Image> image) throws MessagingException {
+
+				try {
+
+			        SmtpAuthenticator authentication = new SmtpAuthenticator();
+			        javax.mail.Message msg = new MimeMessage(Session
+			                            .getDefaultInstance(this.getMailServerProperties(), authentication));
+			        msg.setFrom(new InternetAddress("nikolamas73@gmail.com"));
+			        msg.setRecipients(Message.RecipientType.TO,
+						InternetAddress.parse(to));
+			        msg.setSubject(title);
+			        
+			        StringBuilder sb = new StringBuilder();
+			        for (Image image2 : image) {
+						sb.append("Name of image:"+image2.getName());
+						sb.append("\n");
+						
+					}
+			        
+			        msg.setText("Dear seller,"
+						+ "\n\n You sold more images:\n"
+			        		+sb.toString()
+			        		
+			        );
+//			        Multipart multipartMsg = new MimeMultipart();
+//			        
+//			        for (Resolution res : list) {
+//			        	addAttachment(res.getPath(), msg, multipartMsg);
+//					}
+			        
+			        
+			        
+					Transport.send(msg);
+
+					System.out.println("MAIL SENT::Done");
+
+				} catch (MessagingException e) {
+					throw new RuntimeException(e);
+				}
+			}
 	    
 	    public void sendWithAttachmentImage(String to,String title,List<Image> list) throws MessagingException {
 

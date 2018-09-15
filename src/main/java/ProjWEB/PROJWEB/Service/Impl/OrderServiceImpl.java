@@ -118,14 +118,14 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public Order payCart(long userId) throws SQLException, MessagingException {
 		
-		
+		//trazenje neplacenog ordera jedan jedini
 		ArrayList<Order> orderUnpaidList = orderDao.findByUserId(userId, "unpaid");
 		Order orderUnpaid = orderUnpaidList.get(0);
 		
-		
-       ArrayList<Order_image> orderImageList = orderDao.findByOrderId(orderUnpaid.getId());
-       ArrayList<Image> imagesForMail = new ArrayList<>();
+		//izvlacenje slika za slanje kupcu
+        ArrayList<Order_image> orderImageList = orderDao.findByOrderId(orderUnpaid.getId());
        
+        //izvlacenje tacnih rezolucija za mejl kupcu
 		List<Resolution> resolutions = new ArrayList<>();
 		for (Order_image order_image : orderImageList) {
 			ArrayList<Image> images = imageDao.findImageById(order_image.getImageId());
@@ -133,22 +133,31 @@ public class OrderServiceImpl implements OrderService {
 			Resolution resolutionDto = resolutionService.getResolutionForImage(order_image.getImageId(), order_image.getResolution());
 			resolutions.add(resolutionDto);
 		}
-		
+		//slanje slika na mejl
 		mailService.sendWithAttachment("mmasulovic17@raf.rs", "proba", resolutions);
+		
+		List<Image> imagesForSellerMail = new ArrayList<>();
 		Order order = new Order();
 		order.setUserId(userId);
 		int updateResult = orderDao.payOrder(userId);
 		if(updateResult > 0) {
 			for (Resolution resolution : resolutions) {
+				//nadjem slike za mejl da posaljem prodavcu slika
+				ArrayList<Image> imageForMailLIST = imageDao.findImageById(resolution.getSlikaId());
+				Image image = imageForMailLIST.get(0);
+				imagesForSellerMail.add(image);
+				
+				//update counta posto je slika prodata
 				resolution.setCount(resolution.getCount()+1);
 				resolutionDao.update(resolution);
 			}
+			mailService.sendMailSoldImages("nikola.masulovic@netcast.rs", "SOLD", imagesForSellerMail);
+			//pravljenje novog ordera posto je platio stari dobija praznu korpu/order
 			long saveResult = orderDao.saveBlankOrder(order);
 			System.out.println("SAVE RES:"+saveResult);
 			if(saveResult > 0) {
 				order.setId(saveResult);
 				order.setUserId(userId);
-				//order.setOrderDate(orderDate);
 			}
 		}
 		System.out.println(updateResult);
