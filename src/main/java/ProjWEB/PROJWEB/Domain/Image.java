@@ -15,12 +15,13 @@ public class Image {
 	private String path;
 	private long userId;
 	private int approved;
+	private double rate;
 	private String url;
 
 	public Image() {}
 
 	public Image(long id, int numOfCopiesSelled, String datePublished, int price, String name, String place,
-			String description, long userId,String path,int approved) {
+			String description, long userId,String path,int approved,double rate) {
 		super();
 		this.id = id;
 		this.numOfCopiesSelled = numOfCopiesSelled;
@@ -33,6 +34,7 @@ public class Image {
 		this.path = path;
 		this.approved = approved;
 		this.url = "";
+		this.rate = rate;
 	}
 
 	public long getId() {
@@ -122,13 +124,20 @@ public class Image {
 	public void setUrl(String url) {
 		this.url = url;
 	}
+	
+	public double getRate() {
+		return rate;
+	}
+
+	public void setRate(double rate) {
+		this.rate = rate;
+	}
 
 	@Override
 	public String toString() {
 		return "Image [id=" + id + ", numOfCopiesSelled=" + numOfCopiesSelled + ", datePublished=" + datePublished
 				+ ", price=" + price + ", name=" + name + ", place=" + place + ", description=" + description
-				+ ", path=" + path + ", userId=" + userId + ", approved=" + approved + ", url=" + url + "]";
+				+ ", path=" + path + ", userId=" + userId + ", approved=" + approved + ", rate=" + rate + ", url=" + url
+				+ "]";
 	}
-
-
 }

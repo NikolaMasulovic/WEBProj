@@ -52,8 +52,9 @@ public class ImageDao {
 				long userId = Long.parseLong(rs.getString("userId"));
 				String path = rs.getString("path");
 				int approved = Integer.parseInt(rs.getString("approved"));
+                double rate = rs.getDouble("rate");
 				
-				Image img = new Image(id,numOfCopies,datePublished,price,name,place,description,userId,path,approved);
+				Image img = new Image(id,numOfCopies,datePublished,price,name,place,description,userId,path,approved,rate);
 				list.add(img);
 				System.out.println();
 			}
@@ -122,8 +123,9 @@ public class ImageDao {
 				long userId = Long.parseLong(rs.getString("userId"));
 				String path = rs.getString("path");
 				int approved = Integer.parseInt(rs.getString("approved"));
+                double rate = Double.parseDouble(rs.getString("rate"));
 				
-				Image img = new Image(id,numOfCopies,datePublished,price,name,place,description,userId,path,approved);
+				Image img = new Image(id,numOfCopies,datePublished,price,name,place,description,userId,path,approved,rate);
 				list.add(img);
 				System.out.println();
 			}
@@ -227,8 +229,9 @@ public class ImageDao {
 				long userId = Long.parseLong(rs.getString("userId"));
 				String path = rs.getString("path");
 				int approved = Integer.parseInt(rs.getString("approved"));
+                double rate = Double.parseDouble(rs.getString("rate"));
 				
-				Image img = new Image(id,numOfCopies,datePublished,price,name,place,description,userId,path,approved);
+				Image img = new Image(id,numOfCopies,datePublished,price,name,place,description,userId,path,approved,rate);
 				list.add(img);
 				System.out.println();
 			}
@@ -267,8 +270,9 @@ public class ImageDao {
 				long userId = Long.parseLong(rs.getString("userId"));
 				String path = rs.getString("path");
 				int approved = Integer.parseInt(rs.getString("approved"));
+				double rate = Double.parseDouble(rs.getString("rate"));
 				
-				Image img = new Image(id,numOfCopies,datePublished,price,name,place,description,userId,path,approved);
+				Image img = new Image(id,numOfCopies,datePublished,price,name,place,description,userId,path,approved,rate);
 				list.add(img);
 				System.out.println();
 			}
@@ -280,6 +284,22 @@ public class ImageDao {
 			con.close();
 		}
 		return list;
+	}
+	
+	public int updateRate(long imageId,double rate) throws SQLException {
+		loadDB();
+		int res = 0;
+		String sql = "UPDATE webProjDB.slika SET rate = "+rate+" WHERE id = "+imageId+";";
+		System.out.println(sql);
+		try {
+			res = st.executeUpdate(sql);
+		}catch(SQLException ex) {
+			System.out.println("SQL ERROR::UPDATE APPROVED");
+		}finally {
+			st.close();
+			con.close();
+		}
+		return res;
 	}
 	
 	

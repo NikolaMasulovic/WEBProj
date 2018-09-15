@@ -50,6 +50,13 @@ public class ImageApi {
 		imageService.save(image);
 	}
 	
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	@Path("/updateRate/{imageId}/{rate}")
+	public int updateRate(@PathParam("imageId") long imageId,@PathParam("rate") int rate) throws SQLException {
+		return imageService.updateRate(imageId, rate);
+	}
+	
 	/*
 	 * RESOLUTIONS
 	 */

@@ -19,9 +19,11 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import ProjWEB.PROJWEB.Dao.ImageDao;
+import ProjWEB.PROJWEB.Dao.RatingDao;
 import ProjWEB.PROJWEB.Dao.TagDao;
 import ProjWEB.PROJWEB.Dao.UserDao;
 import ProjWEB.PROJWEB.Domain.Image;
+import ProjWEB.PROJWEB.Domain.Rating;
 import ProjWEB.PROJWEB.Domain.Resolution;
 import ProjWEB.PROJWEB.Domain.Tag;
 import ProjWEB.PROJWEB.Domain.User;
@@ -40,6 +42,7 @@ public class ImageServiceImpl implements ImageService{
 	private ResolutionService resolutionService = new ResolutionServiceImpl();
 	private UserDao userDao = new UserDao();
 	private TagDao tagDao = new TagDao();
+	private RatingDao ratingDao = new RatingDao();
 
 
 	/*
@@ -227,7 +230,7 @@ public class ImageServiceImpl implements ImageService{
 		
 		
 		
-		Image img = new Image(0, 0, datePublished, 0, name, "", description,userId, "", 0);
+		Image img = new Image(0, 0, datePublished, 0, name, "", description,userId, "", 0,0.0);
 		img.setUrl(resolutions.get(0).getBase64());
 		int imageId =  save(img);
 		
@@ -321,7 +324,7 @@ public class ImageServiceImpl implements ImageService{
 		
 		
 		
-		Image img = new Image(0, 0, datePublished, 0, name, "", description,userId, "", 0);
+		Image img = new Image(0, 0, datePublished, 0, name, "", description,userId, "", 0,0.0);
 		img.setUrl(resolutions.get(0).getBase64());
 		int imageId =  save(img);
 		
@@ -339,6 +342,39 @@ public class ImageServiceImpl implements ImageService{
 		System.out.println("TAG::"+tg);
 		
 		return true;
+	}
+
+	@Override
+	public int updateRate(long imageId, int rate) throws SQLException {
+		
+		//danasnji datum za save rating
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date date = new Date();
+		String datePublished = dateFormat.format(date);
+		System.out.println(dateFormat.format(date));
+		
+		List<Image> imageList = imageDao.findImageById(imageId);
+		Image image = imageList.get(0);
+		List<Rating> ratings = ratingDao.findAllByImageId(image.getId());
+		
+		double ratingDb = 0;
+		int ocena =0;
+		int ukupno =0;
+		for (Rating rating : ratings) {
+			ocena += rating.getOcena();
+			ukupno++;
+		}
+		ocena = ocena+rate;
+		ukupno = ukupno+1;
+		ratingDb = (double)ocena/(double)(ukupno);
+		System.out.println("ocena/ukupno"+ocena+"/"+ukupno);
+		System.out.println("DOUBLE"+ratingDb);
+		
+		//save rating
+		Rating ratingApi = new Rating(0, rate, datePublished, 1, imageId);
+		ratingDao.save(ratingApi);
+
+		return imageDao.updateRate(imageId, ratingDb);
 	}
 	
 }

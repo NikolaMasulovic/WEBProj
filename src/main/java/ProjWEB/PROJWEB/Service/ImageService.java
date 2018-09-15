@@ -40,5 +40,7 @@ public interface ImageService {
 	
 	public boolean approveImage(long imageId) throws SQLException;
 	
+	public int updateRate(long imageId,int rate) throws SQLException;
+	
 	//public int saveTest(List<ImageSaveDto> dtos);
 }

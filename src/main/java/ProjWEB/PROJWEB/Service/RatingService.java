@@ -4,6 +4,7 @@ package ProjWEB.PROJWEB.Service;
 import java.sql.SQLException;
 import java.util.List;
 
+import ProjWEB.PROJWEB.Domain.Image;
 import ProjWEB.PROJWEB.Domain.Rating;
 
 public interface RatingService {
@@ -15,5 +16,7 @@ public interface RatingService {
 	public List<Rating> findByImageId(long imageId) throws SQLException;
 	
 	public List<Rating> findByUserId(long userId) throws SQLException;
+	
+	public List<Image> findAllImages() throws SQLException;
 
 }
