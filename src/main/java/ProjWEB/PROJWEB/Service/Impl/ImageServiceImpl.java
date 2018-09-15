@@ -123,9 +123,27 @@ public class ImageServiceImpl implements ImageService{
 	}
 
 	@Override
-	public ArrayList<Image> getImageForUser(long userId, int approved) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Image> getImageForUser(long userId, int approved) throws SQLException {
+		ImagePageableDto pageable = new ImagePageableDto();
+		int imagecount = imageDao.findAllCount();
+		pageable.setCount(imagecount);
+		List<Image> forretrun = new ArrayList<>();
+		List<Image> forretrun1 = imageDao.findAllByUserId(userId, 1);
+		BufferedImage imagefile = null;
+		for (Image image : forretrun1) {
+				try {
+					imagefile = ImageIO.read(new File(image.getPath()));
+				} catch (IOException e) {
+					System.out.println("GETTING IMAGE FROM FILE ERROR::ID "+image.getId());
+					e.printStackTrace();
+					continue;
+				}
+				String url64 = "data:image/jpeg;base64,"+ImageUtils.base64FromImage(imagefile);
+				image.setUrl(url64);
+				forretrun.add(image);
+		}
+		
+		return (ArrayList<Image>) forretrun;
 	}
 
 	@Override

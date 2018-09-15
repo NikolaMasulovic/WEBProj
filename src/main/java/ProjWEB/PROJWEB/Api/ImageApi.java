@@ -1,6 +1,7 @@
 package ProjWEB.PROJWEB.Api;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -132,5 +133,13 @@ public class ImageApi {
 	public Response approveImage(@PathParam("imageId") long imageId) throws SQLException {
 		System.out.println(imageId);
 		return Response.status(200).type("text/plain").entity(imageService.approveImage(imageId)).build();
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/user/{userId}")
+	public ArrayList<Image> findByUserId(@PathParam("userId") long userId) throws SQLException {
+		System.out.println(userId);
+		return imageService.getImageForUser(userId,1);
 	}
 }

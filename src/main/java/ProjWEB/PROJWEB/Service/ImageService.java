@@ -28,7 +28,7 @@ public interface ImageService {
 	
 	//public ImageAdminDto getAllForAdmin()  throws SQLException ;
 	
-	public ArrayList<Image> getImageForUser(long userId,int approved);
+	public ArrayList<Image> getImageForUser(long userId,int approved) throws SQLException;
 	
 	public boolean approve(long userId,int approve);
 	
