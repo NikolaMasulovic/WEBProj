@@ -12,21 +12,29 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import ProjWEB.PROJWEB.Domain.Rating;
 import ProjWEB.PROJWEB.Domain.Tag;
-import ProjWEB.PROJWEB.Domain.Dto.UserLoginDto;
+import ProjWEB.PROJWEB.Service.RatingService;
 import ProjWEB.PROJWEB.Service.TagService;
+import ProjWEB.PROJWEB.Service.Impl.RatingServiceImpl;
 import ProjWEB.PROJWEB.Service.Impl.TagServiceImpl;
 
 @Path("/tags")
 public class TagApi {
 
 	private TagService tagService = new TagServiceImpl();
+	private RatingService ratingService = new RatingServiceImpl();
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Tag> getUsers() throws SQLException{
 		List<Tag> tags = tagService.findAllTags();
-		System.out.println("frfr");
+		
+		List<Rating> ratings = ratingService.findAll();
+		for (Rating rating : ratings) {
+			System.out.println("RATING::"+rating.toString());
+		}
+		
 		return tags;
 	}
 	
