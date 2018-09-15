@@ -19,6 +19,7 @@ import javax.mail.internet.MimeMultipart;
 
 import ProjWEB.PROJWEB.Domain.Image;
 import ProjWEB.PROJWEB.Domain.Resolution;
+import ProjWEB.PROJWEB.Domain.Dto.CompanySaveResponseDto;
 
 public class MailService {
 	
@@ -55,6 +56,40 @@ public class MailService {
 		        for (Resolution res : list) {
 		        	addAttachment(res.getPath(), msg, multipartMsg);
 				}
+		        
+		        
+		        
+				Transport.send(msg);
+
+				System.out.println("MAIL SENT::Done");
+
+			} catch (MessagingException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	    
+	    public void sendMailCompanyRegister(String to,String title,CompanySaveResponseDto companyuser) throws MessagingException {
+
+			try {
+
+		        SmtpAuthenticator authentication = new SmtpAuthenticator();
+		        javax.mail.Message msg = new MimeMessage(Session
+		                            .getDefaultInstance(this.getMailServerProperties(), authentication));
+		        msg.setFrom(new InternetAddress("nikolamas73@gmail.com"));
+		        msg.setRecipients(Message.RecipientType.TO,
+					InternetAddress.parse(to));
+		        msg.setSubject(title);
+		        msg.setText("Dear,"
+					+ "\n\n your operater account is:\n"
+					+ "username:"+companyuser.getUsername()+"\n"
+					+ "password:"+companyuser.getPassword()+"\n"
+					+ "<a href=\"http://localhost:8000/#/login\">login</a>"
+		        );
+//		        Multipart multipartMsg = new MimeMultipart();
+//		        
+//		        for (Resolution res : list) {
+//		        	addAttachment(res.getPath(), msg, multipartMsg);
+//				}
 		        
 		        
 		        

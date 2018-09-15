@@ -159,8 +159,14 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public int saveBlankOrder(long userId) throws SQLException {
-		// TODO Auto-generated method stub
+	public long saveBlankOrder(long userId) throws SQLException {
+		Order order = new Order();
+		order.setUserId(userId);
+		order.setOrderSatus("unpaid");
+		long orderId = 0;
+		orderId = orderDao.saveBlankOrder(order);
+		if(orderId > 0) return orderId; 
+		
 		return 0;
 	}
 

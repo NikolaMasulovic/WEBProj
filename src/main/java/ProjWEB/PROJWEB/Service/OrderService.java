@@ -23,6 +23,6 @@ public List<Order> findAll();
 	
 	public Order getCart(long userId) throws SQLException;
 	
-	public int saveBlankOrder(long userId) throws SQLException;
+	public long saveBlankOrder(long userId) throws SQLException;
 
 }
