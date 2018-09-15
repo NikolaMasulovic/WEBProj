@@ -25,7 +25,7 @@ public class User {
 	/*
 	 *ocena po kojoj se izvlace useri 
 	 */
-	private int rate;
+	private double rate;
 	/*
 	 * optimistic lock
 	 */
@@ -99,10 +99,10 @@ public class User {
 	public void setDeleted(int deleted) {
 		this.deleted = deleted;
 	}
-	public int getRate() {
+	public double getRate() {
 		return rate;
 	}
-	public void setRate(int rate) {
+	public void setRate(double rate) {
 		this.rate = rate;
 	}
 	public int getVersion() {
@@ -112,7 +112,7 @@ public class User {
 		this.version = version;
 	}
 	public User(long id, String username, String password, int role, String email, String country, int daily,
-			int weekly,String kartica,long companyId,int deleted,int rate,int version) {
+			int weekly,String kartica,long companyId,int deleted,double rate,int version) {
 		super();
 		this.id = id;
 		this.username = username;

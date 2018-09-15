@@ -302,5 +302,350 @@ public class ImageDao {
 		return res;
 	}
 	
+	/**
+	 * SEARCH
+	 */
+	
+//	public int searchCategoryCount(String searchFor, String sortBy, String direction, String searchTerm) {
+//		String sql;
+//		sql="SELECT count(*) AS count\n" + 
+//				"FROM\n" + 
+//				"(SELECT u.id user_id,u.username,u.ocena user_ocena,u.firmaId,b.photo_id,b.photo_name,b.photo_path,b.uploadDate,b.selledCount, b.ocena, b.price, b.deleted, b.approved, b.categoryName,b.category_id\n" + 
+//				"FROM\n" + 
+//				"unsplash2_db.user u\n" + 
+//				"INNER JOIN (\n" + 
+//				"SELECT c.id category_id, c.categoryName, p.id photo_id,p.photoName photo_name, p.path photo_path,p.uploadDate,p.selledCount,p.ocena, p.price, p.deleted, p.approved, p.userId\n" + 
+//				"FROM \n" + 
+//				"unsplash2_db.Category  AS c\n" + 
+//				"INNER JOIN unsplash2_db.photo_category  AS p_c ON p_c.categoryId = c.id\n" + 
+//				"INNER JOIN unsplash2_db.Photo AS p ON p_c.photoId = p.id\n" + 
+//				") b ON u.id = b.userId\n" + 
+//				") z \n" + 
+//				"LEFT JOIN unsplash2_db.Firma f\n" + 
+//				"ON f.id = z.firmaId\n" + 
+//				"WHERE deleted = 0 AND approved= 1 AND categoryName LIKE ?;";
+//				
+//		loadDB();
+//		PreparedStatement statement;
+//		int count = 0;
+//		try {
+//			statement = con.prepareStatement(sql);
+//			statement.setString(1, '%'+searchTerm+'%');
+//			
+//			ResultSet resultSet = statement.executeQuery();
+////			String executedQuery = resultSet.getStatement().toString();
+////			System.out.println(executedQuery);
+//			if (resultSet.next()) {
+//				count = resultSet.getInt("count");
+//			}
+//
+//			resultSet.close();
+//			statement.close();
+//
+//			//ConnectionManager.disconnect();
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		return count;
+//	}
+//	public int searchKeywordCount(String searchFor, String sortBy, String direction, String searchTerm) {
+//		String sql;
+//		sql="SELECT count(*) AS count\n" + 
+//				"FROM\n" + 
+//				"(SELECT u.id user_id,u.username,u.ocena user_ocena,u.firmaId,p.id photo_id,p.photoName photo_name,p.uploadDate,p.path,p.selledCount,p.price,p.ocena photo_ocena,p.approved,p.deleted,p.location,p.opis\n" + 
+//				"FROM\n" + 
+//				"unsplash2_db.user u\n" + 
+//				"INNER JOIN unsplash2_db.Photo p\n" + 
+//				"ON u.id = p.userId\n" + 
+//				") z\n" + 
+//				"LEFT JOIN unsplash2_db.Firma f\n" + 
+//				"ON f.id = z.firmaId\n" + 
+//				"WHERE deleted = 0 AND approved= 1 AND (photo_name LIKE ? OR username LIKE ? OR f.naziv LIKE ? OR location LIKE ? OR opis LIKE ?)";
+//		loadDB();
+//		PreparedStatement statement;
+//		int count = 0;
+//		try {
+//			statement = conn.prepareStatement(sql);
+//			statement.setString(1, '%'+searchTerm+'%');
+//			statement.setString(2, '%'+searchTerm+'%');
+//			statement.setString(3, '%'+searchTerm+'%');
+//			statement.setString(4, '%'+searchTerm+'%');
+//			statement.setString(5, '%'+searchTerm+'%');
+//			
+//			ResultSet resultSet = statement.executeQuery();
+//			if (resultSet.next()) {
+//				count = resultSet.getInt("count");
+//			}
+//			
+//			resultSet.close();
+//			statement.close();
+//			
+//			ConnectionManager.disconnect();
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		return count;
+//	}
+//	public int searchUserNameCount(String searchFor, String sortBy, String direction, String searchTerm) {
+//		String sql;
+//		sql="SELECT count(*) AS count\n" + 
+//				"FROM\n" + 
+//				"(SELECT u.id user_id,u.username,u.ocena user_ocena,u.firmaId,p.id photo_id,p.photoName photo_name,p.uploadDate,p.path,p.selledCount,p.price,p.ocena photo_ocena,p.approved,p.deleted\n" + 
+//				"FROM\n" + 
+//				"unsplash2_db.user u\n" + 
+//				"INNER JOIN unsplash2_db.Photo p\n" + 
+//				"ON u.id = p.userId\n" + 
+//				") z\n" + 
+//				"LEFT JOIN unsplash2_db.Firma f\n" + 
+//				"ON f.id = z.firmaId\n" + 
+//				"WHERE deleted = 0 AND approved = 1 AND "+searchFor+" LIKE ?";
+//		loadDB();
+//		PreparedStatement statement;
+//		int count = 0;
+//		try {
+//			statement = conn.prepareStatement(sql);
+//			statement.setString(1, '%'+searchTerm+'%');
+////			statement.setInt(2, b);
+//			
+//			ResultSet resultSet = statement.executeQuery();
+//			if (resultSet.next()) {
+//				count = resultSet.getInt("count");
+//			}
+//			
+//			resultSet.close();
+//			statement.close();
+//			
+//			ConnectionManager.disconnect();
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		return count;
+//	}
+//	
+//	public List<SeptPhotoDto> searchUserName(String searchFor, String sortBy, String direction, String searchTerm,int itemsPerPage, int pagenumber) {
+//		String sql;
+//		sql="SELECT f.id firma_id, f.naziv firma_naziv,f.level firma_nivo,z.user_id,z.username,z.user_ocena,z.firmaId, z.photo_id,z.photo_name,z.uploadDate, z.path, z.selledCount, z.price, z.photo_ocena,z.approved,z.deleted\n" + 
+//				"FROM\n" + 
+//				"(SELECT u.id user_id,u.username,u.ocena user_ocena,u.firmaId,p.id photo_id,p.photoName photo_name,p.uploadDate,p.path,p.selledCount,p.price,p.ocena photo_ocena,p.approved,p.deleted\n" + 
+//				"FROM\n" + 
+//				"unsplash2_db.user u\n" + 
+//				"INNER JOIN unsplash2_db.Photo p\n" + 
+//				"ON u.id = p.userId\n" + 
+//				") z\n" + 
+//				"LEFT JOIN unsplash2_db.Firma f\n" + 
+//				"ON f.id = z.firmaId\n" + 
+//				"WHERE deleted = 0 AND approved = 1 AND "+searchFor+" LIKE ?\n" + 
+//				"ORDER BY CASE WHEN firma_nivo = 'zlatni' THEN '0'\n" + 
+//				"								WHEN user_ocena >= 4.0 AND user_ocena <=5.0 THEN '1'\n" + 
+//				"                                WHEN firma_nivo = 'srebrni' THEN '2'\n" + 
+//				"                                WHEN user_ocena >= 3.0 AND user_ocena <=4.0 THEN '3'\n" + 
+//				"                                WHEN firma_nivo = 'bronzani' THEN '4'\n" + 
+//				"								ELSE "+sortBy+"\n" + 
+//				"							END,"+sortBy+" "+direction+" LIMIT ?,?";
+//		
+//		
+//		loadDB();
+//		int a = (pagenumber - 1) * itemsPerPage;
+//		int b = itemsPerPage;
+//		// ({pagenumber}-1)*{itemsPerPage},{itemsPerPage}
+//		List<SeptPhotoDto> list = new ArrayList<>();
+//		SeptPhotoDto p = null;
+//		PreparedStatement statement;
+//		try {
+//			statement = conn.prepareStatement(sql);
+//			statement.setString(1, '%'+searchTerm+'%');
+//			statement.setInt(2, a);
+//			statement.setInt(3, b);
+//			ResultSet resultSet = statement.executeQuery();
+//			String executedQuery = resultSet.getStatement().toString();
+//			System.out.println(executedQuery);
+//			while (resultSet.next()) {
+//				long firmaId = resultSet.getInt("firma_id");
+//				String firmaNaziv = resultSet.getString("firma_naziv");
+//				String firmaNivo = resultSet.getString("firma_nivo");
+//				long userId = resultSet.getInt("user_id");
+//				String username = resultSet.getString("username");
+//				double userOcena = resultSet.getDouble("user_ocena");
+//				long photoId = resultSet.getInt("photo_id");
+//				String photoName = resultSet.getString("photo_name");
+//				String uploadDate = resultSet.getString("uploadDate");
+//				String path = resultSet.getString("path");
+//				int selledCount = resultSet.getInt("selledCount");
+//				double price = resultSet.getDouble("price");
+//				double photoOcena = resultSet.getDouble("photo_ocena");
+//				int approved = resultSet.getInt("approved");
+//				int deleted = resultSet.getInt("deleted");
+//				p = new SeptPhotoDto(firmaId,firmaNaziv,firmaNivo,userId,username,userOcena,photoId,photoName,uploadDate,path,selledCount,price,photoOcena,approved,deleted);
+//				System.out.println(p);
+//				list.add(p);
+//			}
+//
+//			resultSet.close();
+//			statement.close();
+//
+//			ConnectionManager.disconnect();
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return list;
+//		
+//	}
+//	
+//	public List<SeptPhotoDto> searchKeyword(String searchFor, String sortBy, String direction, String searchTerm,int itemsPerPage, int pagenumber) {
+//		String sql;
+//		sql="SELECT f.id firma_id, f.naziv firma_naziv,f.level firma_nivo,z.user_id,z.username,z.user_ocena,z.firmaId, z.photo_id,z.photo_name,z.uploadDate, z.path, z.selledCount, z.price, z.photo_ocena,z.approved,z.deleted, z.location, z.opis\n" + 
+//				"FROM\n" + 
+//				"(SELECT u.id user_id,u.username,u.ocena user_ocena,u.firmaId,p.id photo_id,p.photoName photo_name,p.uploadDate,p.path,p.selledCount,p.price,p.ocena photo_ocena,p.approved,p.deleted,p.location,p.opis\n" + 
+//				"FROM\n" + 
+//				"unsplash2_db.user u\n" + 
+//				"INNER JOIN unsplash2_db.Photo p\n" + 
+//				"ON u.id = p.userId\n" + 
+//				") z\n" + 
+//				"LEFT JOIN unsplash2_db.Firma f\n" + 
+//				"ON f.id = z.firmaId\n" + 
+//				"WHERE deleted = 0 AND approved= 1 AND (photo_name LIKE ? OR username LIKE ? OR f.naziv LIKE ? OR location LIKE ? OR opis LIKE ?)\n" + 
+//				"ORDER BY CASE WHEN firma_nivo = 'zlatni' THEN '0'\n" + 
+//				"								WHEN user_ocena >= 4.0 AND user_ocena <=5.0 THEN '1'\n" + 
+//				"                                WHEN firma_nivo = 'srebrni' THEN '2'\n" + 
+//				"                                WHEN user_ocena >= 3.0 AND user_ocena <=4.0 THEN '3'\n" + 
+//				"                                WHEN firma_nivo = 'bronzani' THEN '4'\n" + 
+//				"								ELSE "+sortBy+"\n" + 
+//				"							END,"+sortBy+" "+direction+" LIMIT ?,?\n" + 
+//				"\n" + 
+//				"";
+//		loadDB();
+//		int a = (pagenumber - 1) * itemsPerPage;
+//		int b = itemsPerPage;
+//		// ({pagenumber}-1)*{itemsPerPage},{itemsPerPage}
+//		List<SeptPhotoDto> list = new ArrayList<>();
+//		SeptPhotoDto p = null;
+//		PreparedStatement statement;
+//		try {
+//			statement = conn.prepareStatement(sql);
+//			statement.setString(1, '%'+searchTerm+'%');
+//			statement.setString(2, '%'+searchTerm+'%');
+//			statement.setString(3, '%'+searchTerm+'%');
+//			statement.setString(4, '%'+searchTerm+'%');
+//			statement.setString(5, '%'+searchTerm+'%');
+//			statement.setInt(6, a);
+//			statement.setInt(7, b);
+//			ResultSet resultSet = statement.executeQuery();
+//			String executedQuery = resultSet.getStatement().toString();
+//			System.out.println(executedQuery);
+//			while (resultSet.next()) {
+//				long firmaId = resultSet.getInt("firma_id");
+//				String firmaNaziv = resultSet.getString("firma_naziv");
+//				String firmaNivo = resultSet.getString("firma_nivo");
+//				long userId = resultSet.getInt("user_id");
+//				String username = resultSet.getString("username");
+//				double userOcena = resultSet.getDouble("user_ocena");
+//				long photoId = resultSet.getInt("photo_id");
+//				String photoName = resultSet.getString("photo_name");
+//				String uploadDate = resultSet.getString("uploadDate");
+//				String path = resultSet.getString("path");
+//				int selledCount = resultSet.getInt("selledCount");
+//				double price = resultSet.getDouble("price");
+//				double photoOcena = resultSet.getDouble("photo_ocena");
+//				int approved = resultSet.getInt("approved");
+//				int deleted = resultSet.getInt("deleted");
+//				p = new SeptPhotoDto(firmaId,firmaNaziv,firmaNivo,userId,username,userOcena,photoId,photoName,uploadDate,path,selledCount,price,photoOcena,approved,deleted);
+//				System.out.println(p);
+//				list.add(p);
+//			}
+//
+//			resultSet.close();
+//			statement.close();
+//
+//			ConnectionManager.disconnect();
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return list;
+//		
+//	}
+//	
+//	public List<SeptPhotoDto> searchCategory(String searchFor, String sortBy, String direction, String searchTerm,int itemsPerPage, int pagenumber) {
+//		String sql;
+//		sql="SELECT f.id firma_id, f.naziv firma_naziv, f.level firma_nivo, z.user_id, z.username, z.user_ocena, z.photo_id, z.photo_name, z.photo_path, z.uploadDate, z.selledCount,z.ocena, z.price, z.deleted, z.approved, z.categoryName, z.category_id\n" + 
+//				"FROM\n" + 
+//				"(SELECT u.id user_id,u.username,u.ocena user_ocena,u.firmaId,b.photo_id,b.photo_name,b.photo_path,b.uploadDate,b.selledCount, b.ocena, b.price, b.deleted, b.approved, b.categoryName,b.category_id\n" + 
+//				"FROM\n" + 
+//				"unsplash2_db.user u\n" + 
+//				"INNER JOIN (\n" + 
+//				"SELECT c.id category_id, c.categoryName, p.id photo_id,p.photoName photo_name, p.path photo_path,p.uploadDate,p.selledCount,p.ocena, p.price, p.deleted, p.approved, p.userId\n" + 
+//				"FROM \n" + 
+//				"unsplash2_db.Category  AS c\n" + 
+//				"INNER JOIN unsplash2_db.photo_category  AS p_c ON p_c.categoryId = c.id\n" + 
+//				"INNER JOIN unsplash2_db.Photo AS p ON p_c.photoId = p.id\n" + 
+//				") b ON u.id = b.userId\n" + 
+//				") z \n" + 
+//				"LEFT JOIN unsplash2_db.Firma f\n" + 
+//				"ON f.id = z.firmaId\n" + 
+//				"WHERE deleted = 0 AND approved= 1 AND categoryName LIKE ?\n" + 
+//				"ORDER BY CASE WHEN firma_nivo = 'zlatni' THEN '0'\n" + 
+//				"								WHEN user_ocena >= 4.0 AND user_ocena <=5.0 THEN '1'\n" + 
+//				"                                WHEN firma_nivo = 'srebrni' THEN '2'\n" + 
+//				"                                WHEN user_ocena >= 3.0 AND user_ocena <=4.0 THEN '3'\n" + 
+//				"                                WHEN firma_nivo = 'bronzani' THEN '4'\n" + 
+//				"								ELSE "+sortBy+"\n" + 
+//				"							END,"+ sortBy+" "+direction+" LIMIT ?,?\n" + 
+//				"";
+//		loadDB();
+//		int a = (pagenumber - 1) * itemsPerPage;
+//		int b = itemsPerPage;
+//		// ({pagenumber}-1)*{itemsPerPage},{itemsPerPage}
+//		List<SeptPhotoDto> list = new ArrayList<>();
+//		SeptPhotoDto p = null;
+//		PreparedStatement statement;
+//		try {
+//			statement = conn.prepareStatement(sql);
+//			statement.setString(1, '%'+searchTerm+'%');
+//			statement.setInt(2, a);
+//			statement.setInt(3, b);
+//			ResultSet resultSet = statement.executeQuery();
+//			String executedQuery = resultSet.getStatement().toString();
+//			System.out.println(executedQuery);
+//			while (resultSet.next()) {
+//				long firmaId = resultSet.getInt("firma_id");
+//				String firmaNaziv = resultSet.getString("firma_naziv");
+//				String firmaNivo = resultSet.getString("firma_nivo");
+//				long userId = resultSet.getInt("user_id");
+//				String username = resultSet.getString("username");
+//				double userOcena = resultSet.getDouble("user_ocena");
+//				long photoId = resultSet.getInt("photo_id");
+//				String photoName = resultSet.getString("photo_name");
+//				String uploadDate = resultSet.getString("uploadDate");
+//				String path = resultSet.getString("photo_path");
+//				int selledCount = resultSet.getInt("selledCount");
+//				double price = resultSet.getDouble("price");
+//				double photoOcena = resultSet.getDouble("ocena");
+//				int approved = resultSet.getInt("approved");
+//				int deleted = resultSet.getInt("deleted");
+//				long categeryId = resultSet.getInt("category_id");
+//				String categeryName = resultSet.getString("categoryName");
+//				p = new SeptPhotoDto(firmaId,firmaNaziv,firmaNivo,userId,username,userOcena,photoId,photoName,uploadDate,path,selledCount,price,photoOcena,approved,deleted,categeryId,categeryName);
+//				System.out.println(p);
+//				list.add(p);
+//			}
+//
+//			resultSet.close();
+//			statement.close();
+//
+//			ConnectionManager.disconnect();
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return list;	
+//	}
+	
 	
 }

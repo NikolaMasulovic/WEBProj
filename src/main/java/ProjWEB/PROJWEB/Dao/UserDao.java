@@ -56,7 +56,7 @@ public class UserDao {
 				String kartica = rs.getString("kartica");
 				long companyId = Long.parseLong(rs.getString("companyId"));
 				int deleted = Integer.parseInt(rs.getString("deleted"));
-				int rate = Integer.parseInt(rs.getString("rate"));
+				double rate = rs.getDouble("rate");
 				int version = Integer.parseInt(rs.getString("version"));
 				
 				User user = new User(userId,username,password,role,email,country,daily,weekly,kartica,companyId,deleted,rate,version);
@@ -134,7 +134,7 @@ public class UserDao {
 				String kartica = rs.getString("kartica");
 				long companyId = Long.parseLong(rs.getString("companyId"));
 				int deleted = Integer.parseInt(rs.getString("deleted"));
-                int rate = Integer.parseInt(rs.getString("rate"));
+				double rate = rs.getDouble("rate");
 				int version = Integer.parseInt(rs.getString("version"));
 				
 				user = new User(userId,username,password,role,email,country,daily,weekly,kartica,companyId,deleted,rate,version);
@@ -168,7 +168,7 @@ public class UserDao {
 				String kartica = rs.getString("kartica");
 				long companyId = Long.parseLong(rs.getString("companyId"));
 				int deleted = Integer.parseInt(rs.getString("deleted"));
-				int rate = Integer.parseInt(rs.getString("rate"));
+				double rate = rs.getDouble("rate");
 				int version = Integer.parseInt(rs.getString("version"));
 				
 				 u = new User(userId,nusername,password,role,email,country,daily,weekly,kartica,companyId,deleted,rate,version);
@@ -208,7 +208,7 @@ public class UserDao {
 				String kartica = rs.getString("kartica");
 				long companyId = Long.parseLong(rs.getString("companyId"));
 				int deleted = Integer.parseInt(rs.getString("deleted"));
-                int rate = Integer.parseInt(rs.getString("rate"));
+				double rate = rs.getDouble("rate");
 				int version = Integer.parseInt(rs.getString("version"));
 				
 				User user = new User(userId,username,password,role,email,country,daily,weekly,kartica,companyId,deleted,rate,version);
@@ -309,7 +309,7 @@ public class UserDao {
 				String kartica = rs.getString("kartica");
 				long companyId = Long.parseLong(rs.getString("companyId"));
 				int deleted = Integer.parseInt(rs.getString("deleted"));
-                int rate = Integer.parseInt(rs.getString("rate"));
+				double rate = rs.getDouble("rate");
 				int version = Integer.parseInt(rs.getString("version"));
 				
 				user = new User(userId,username,password,role,email,country,daily,weekly,kartica,companyId,deleted,rate,version);
@@ -389,7 +389,7 @@ public class UserDao {
 				int weekly = rs.getInt("weekly");
 				String kartica = rs.getString("kartica");
 				int deleted = Integer.parseInt(rs.getString("deleted"));
-                int rate = Integer.parseInt(rs.getString("rate"));
+				double rate = rs.getDouble("rate");
 				int version = Integer.parseInt(rs.getString("version"));
 				
 				u = new User(userId,username,password,role,email,country,daily,weekly,kartica,companyId,deleted,rate,version);
@@ -433,7 +433,7 @@ public class UserDao {
 				int weekly = rs.getInt("weekly");
 				String kartica = rs.getString("kartica");
 				int deleted = Integer.parseInt(rs.getString("deleted"));
-                int rate = Integer.parseInt(rs.getString("rate"));
+				double rate = rs.getDouble("rate");
 				int version = Integer.parseInt(rs.getString("version"));
 				
 				u = new User(userId,username,password,role,email,country,daily,weekly,kartica,companyId,deleted,rate,version);
@@ -478,7 +478,7 @@ public class UserDao {
 				String kartica = rs.getString("kartica");
 				long companyId = Long.parseLong(rs.getString("companyId"));
 				int deleted = Integer.parseInt(rs.getString("deleted"));
-                int rate = Integer.parseInt(rs.getString("rate"));
+				double rate = rs.getDouble("rate");
 				int version = Integer.parseInt(rs.getString("version"));
 
 				u = new User(userId,username,password,role,email,country,daily,weekly,kartica,companyId,deleted,rate,version);
