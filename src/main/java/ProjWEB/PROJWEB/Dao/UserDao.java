@@ -246,7 +246,7 @@ public class UserDao {
 		int res = 0;
 		String sql = "UPDATE webProjDB.user " + 
 				"SET username='"+user.getUsername()+"',password='"+user.getPassword()+"',email='"+user.getEmail()+"',"+
-				"country='"+user.getCountry()+"',"+"role="+user.getRole()+","+"daily="+user.getDaily()+","+"weekly="+user.getWeekly()+",companyId="+user.getCompanyId()+",kartica='"+user.getKartica()+
+				"country='"+user.getCountry()+"',"+"role="+user.getRole()+","+"daily="+user.getDaily()+",rate="+user.getRate()+",weekly="+user.getWeekly()+",companyId="+user.getCompanyId()+",kartica='"+user.getKartica()+
 				"' WHERE id="+user.getId()+";";
 		System.out.println(sql);
 		try {

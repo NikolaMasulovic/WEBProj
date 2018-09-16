@@ -92,6 +92,13 @@ public class UserApi {
 		return userService.adminAddOperater(userId);
 	}
 	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/rateUser/{userId}/{rate}")
+	public Response rateUser(@PathParam("userId") long userId,@PathParam("rate") int rate) throws SQLException {
+		return Response.status(200).type("text/plain").entity(userService.rateUser(userId, rate)).build();
+	}
+	
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/updatePaymentCard")

@@ -1,9 +1,15 @@
 package ProjWEB.PROJWEB.Service.Impl;
 
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import ProjWEB.PROJWEB.Dao.RatingDao;
 import ProjWEB.PROJWEB.Dao.UserDao;
+import ProjWEB.PROJWEB.Domain.Rating;
 import ProjWEB.PROJWEB.Domain.User;
 import ProjWEB.PROJWEB.Domain.Dto.OrderDto;
 import ProjWEB.PROJWEB.Domain.Dto.UserChangePasswordDto;
@@ -16,6 +22,7 @@ public class UserServiceImpl implements UserService{
 	
 	private UserDao userDao = new UserDao();
 	private OrderService orderService = new OrderServiceImpl();
+	private RatingDao ratingDao = new RatingDao();
 
 	@Override
 	public List<User> getAllUsers() throws SQLException {
@@ -126,6 +133,43 @@ public class UserServiceImpl implements UserService{
 	public boolean uploadDailyAndWeekly(User user) throws SQLException {
 		if(userDao.updateDaily(user) > 0) return true;
 		return false;
+	}
+
+	@Override
+	public boolean rateUser(long userId, int rate) throws SQLException {
+		
+		ArrayList<User> userList = userDao.findUserById(userId);
+		User u = userList.get(0);
+		boolean result = false;
+		
+		double rateDb = 0;
+		ArrayList<Rating> ratings = ratingDao.findAllByUserId(userId);
+		int ocene = 0;
+		int count = 0;
+		for (Rating rating : ratings) {
+			ocene += rating.getOcena();
+			count++;
+		}
+		ocene += rate;
+		count = count+1;
+		
+		rateDb = (double)ocene/(double)count;
+		u.setRate(rateDb);
+		User res = userDao.update(u);
+		if(res!=null) {
+			result = true;
+		}
+		
+		//danasnji datum za save rating
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date date = new Date();
+		String datePublished = dateFormat.format(date);
+		System.out.println(dateFormat.format(date));
+				
+		Rating rateNew = new Rating(0, rate, datePublished, userId, 0);
+		ratingDao.save(rateNew);
+		
+		return result;
 	}
 
 }

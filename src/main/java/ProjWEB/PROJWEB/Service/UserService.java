@@ -47,5 +47,7 @@ public interface UserService {
 	public boolean forbidAccess(long userId) throws SQLException;
 	
 	public boolean uploadDailyAndWeekly(User user) throws SQLException;
+	
+	public boolean rateUser(long userId,int rate) throws SQLException;
 
 }
