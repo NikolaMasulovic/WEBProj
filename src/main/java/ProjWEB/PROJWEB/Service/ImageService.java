@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ProjWEB.PROJWEB.Domain.Image;
+import ProjWEB.PROJWEB.Domain.Dto.FilterDto;
 import ProjWEB.PROJWEB.Domain.Dto.ImagePageableDto;
 import ProjWEB.PROJWEB.Domain.Dto.ImageUnapprovedDto;
 import ProjWEB.PROJWEB.Domain.Dto.ImageUploadDto;
@@ -41,6 +42,10 @@ public interface ImageService {
 	public boolean approveImage(long imageId) throws SQLException;
 	
 	public int updateRate(long imageId,int rate) throws SQLException;
+	
+	public int searchCategoryCount();
+	
+	public List<FilterDto> searchCategory();
 	
 	//public int saveTest(List<ImageSaveDto> dtos);
 }

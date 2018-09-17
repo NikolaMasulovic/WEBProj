@@ -27,6 +27,7 @@ import ProjWEB.PROJWEB.Domain.Rating;
 import ProjWEB.PROJWEB.Domain.Resolution;
 import ProjWEB.PROJWEB.Domain.Tag;
 import ProjWEB.PROJWEB.Domain.User;
+import ProjWEB.PROJWEB.Domain.Dto.FilterDto;
 import ProjWEB.PROJWEB.Domain.Dto.ImagePageableDto;
 import ProjWEB.PROJWEB.Domain.Dto.ImageUnapprovedDto;
 import ProjWEB.PROJWEB.Domain.Dto.ImageUploadDto;
@@ -393,6 +394,31 @@ public class ImageServiceImpl implements ImageService{
 		ratingDao.save(ratingApi);
 
 		return imageDao.updateRate(imageId, ratingDb);
+	}
+
+	@Override
+	public int searchCategoryCount() {
+		return imageDao.searchCategoryCount("", "", "", "Priroda");
+	}
+
+	@Override
+	public List<FilterDto> searchCategory() {
+		List<FilterDto> filterImages = imageDao.searchCategory("", "datePublished", "ASC", "Priroda",10, 1);
+		
+		BufferedImage imagefile = null;
+
+		for (FilterDto filterDto : filterImages) {
+			try {
+				imagefile = ImageIO.read(new File(filterDto.getPath()));
+			} catch (IOException e) {
+				System.out.println("GETTING IMAGE FROM FILE ERROR::ID "+filterDto.getPhotoId());
+				e.printStackTrace();
+				continue;
+			}
+			String url64 = "data:image/jpeg;base64,"+ImageUtils.base64FromImage(imagefile);
+			filterDto.setBase64(url64);
+		}
+		return filterImages;
 	}
 	
 }

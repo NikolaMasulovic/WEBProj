@@ -16,6 +16,7 @@ import javax.ws.rs.core.Response;
 import ProjWEB.PROJWEB.Domain.Image;
 import ProjWEB.PROJWEB.Domain.Resolution;
 import ProjWEB.PROJWEB.Domain.Dto.BuyImageDto;
+import ProjWEB.PROJWEB.Domain.Dto.FilterDto;
 import ProjWEB.PROJWEB.Domain.Dto.ImagePageableDto;
 import ProjWEB.PROJWEB.Domain.Dto.ImageUnapprovedDto;
 import ProjWEB.PROJWEB.Domain.Dto.ImageUploadDto;
@@ -56,6 +57,25 @@ public class ImageApi {
 	@Path("/updateRate/{imageId}/{rate}")
 	public int updateRate(@PathParam("imageId") long imageId,@PathParam("rate") int rate) throws SQLException {
 		return imageService.updateRate(imageId, rate);
+	}
+	
+	/**
+	 * Filter
+	 * @return
+	 * @throws SQLException
+	 */
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	@Path("/categoryCount")
+	public int categoryCount() throws SQLException {
+		return imageService.searchCategoryCount();
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/categoryFilter")
+	public List<FilterDto> categoryFilter() throws SQLException {
+		return imageService.searchCategory();
 	}
 	
 	/*
