@@ -78,6 +78,20 @@ public class ImageApi {
 		return imageService.searchCategory();
 	}
 	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/keywordFilter")
+	public List<FilterDto> keyWord() throws SQLException {
+		return imageService.searchKeyword();
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/keywordFilterCount")
+	public int keyWordCount() throws SQLException {
+		return imageService.searchKeywordCount();
+	}
+	
 	/*
 	 * RESOLUTIONS
 	 */

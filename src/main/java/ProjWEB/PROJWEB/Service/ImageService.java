@@ -47,5 +47,9 @@ public interface ImageService {
 	
 	public List<FilterDto> searchCategory();
 	
+	public int searchKeywordCount();
+	
+	public List<FilterDto> searchKeyword();
+	
 	//public int saveTest(List<ImageSaveDto> dtos);
 }
