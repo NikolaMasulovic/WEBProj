@@ -14,7 +14,7 @@ public class FilterDto {
 	private String photoName;
 	private String uploadDate;
 	private String path;
-	private String base64;
+	private String url;
 	private int selledCount;
 	private double price;
 	private double photoOcena;
@@ -43,7 +43,7 @@ public class FilterDto {
 		this.photoName = photoName;
 		this.uploadDate = uploadDate;
 		this.path = path;
-		this.base64 = base64;
+		this.url = base64;
 		this.selledCount = selledCount;
 		this.price = price;
 		this.photoOcena = photoOcena;
@@ -195,11 +195,11 @@ public class FilterDto {
 	}
 
 	public String getBase64() {
-		return base64;
+		return url;
 	}
 
 	public void setBase64(String base64) {
-		this.base64 = base64;
+		this.url = base64;
 	}
 
 	public int getSelledCount() {
@@ -262,7 +262,7 @@ public class FilterDto {
 	public String toString() {
 		return "SeptPhotoDto [firmaId=" + firmaId + ", firmaNaziv=" + firmaNaziv + ", firmaNivo=" + firmaNivo
 				+ ", userId=" + userId + ", username=" + username + ", userOcena=" + userOcena + ", photoId=" + photoId
-				+ ", photoName=" + photoName + ", uploadDate=" + uploadDate + ", path=" + path + ", base64=" + base64
+				+ ", photoName=" + photoName + ", uploadDate=" + uploadDate + ", path=" + path + ", base64=" + url
 				+ ", selledCount=" + selledCount + ", price=" + price + ", photoOcena=" + photoOcena + ", approved="
 				+ approved + ", deleted=" + deleted + ", location=" + location + ", opis=" + opis + "]";
 	}

@@ -73,16 +73,16 @@ public class ImageApi {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/categoryFilter")
-	public List<FilterDto> categoryFilter() throws SQLException {
-		return imageService.searchCategory();
+	@Path("/categoryFilter/{searchFor}/{sortBy}/{direction}/{searchTerm}")
+	public List<FilterDto> categoryFilter(@PathParam("searchFor") String searchFor,@PathParam("sortBy") String sortBy,@PathParam("direction") String direction,@PathParam("searchTerm") String searchTerm) throws SQLException {
+		return imageService.searchCategory(searchFor,sortBy,direction,searchTerm);
 	}
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/keywordFilter")
-	public List<FilterDto> keyWord() throws SQLException {
-		return imageService.searchKeyword();
+	@Path("/keywordFilter/{searchFor}/{sortBy}/{direction}/{searchTerm}")
+	public List<FilterDto> keyWord(@PathParam("searchFor") String searchFor,@PathParam("sortBy") String sortBy,@PathParam("direction") String direction,@PathParam("searchTerm") String searchTerm) throws SQLException {
+		return imageService.searchKeyword(searchFor,sortBy,direction,searchTerm);
 	}
 	
 	@GET
@@ -101,9 +101,9 @@ public class ImageApi {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/usernameFilter")
-	public List<FilterDto> usernameFilter() throws SQLException {
-		return imageService.searchUsername();
+	@Path("/usernameFilter/{searchFor}/{sortBy}/{direction}/{searchTerm}")
+	public List<FilterDto> usernameFilter(@PathParam("searchFor") String searchFor,@PathParam("sortBy") String sortBy,@PathParam("direction") String direction,@PathParam("searchTerm") String searchTerm) throws SQLException {
+		return imageService.searchUsername(searchFor,sortBy,direction,searchTerm);
 	}
 	
 	/*

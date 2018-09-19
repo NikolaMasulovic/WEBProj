@@ -402,8 +402,8 @@ public class ImageServiceImpl implements ImageService{
 	}
 
 	@Override
-	public List<FilterDto> searchCategory() {
-		List<FilterDto> filterImages = imageDao.searchCategory("", "datePublished", "ASC", "Priroda",10, 1);
+	public List<FilterDto> searchCategory(String searchFor, String sortBy, String direction, String searchTerm) {
+		List<FilterDto> filterImages = imageDao.searchCategory(searchFor, sortBy, direction, searchTerm,10, 1);
 		
 		BufferedImage imagefile = null;
 
@@ -427,8 +427,8 @@ public class ImageServiceImpl implements ImageService{
 	}
 
 	@Override
-	public List<FilterDto> searchKeyword() {
-	List<FilterDto> filterImages = imageDao.searchKeyword("", "", "", "Livada",10, 1);
+	public List<FilterDto> searchKeyword(String searchFor, String sortBy, String direction, String searchTerm) {
+	List<FilterDto> filterImages = imageDao.searchKeyword(searchFor, sortBy, direction, searchTerm,10, 1);
 		
 		BufferedImage imagefile = null;
 
@@ -452,8 +452,8 @@ public class ImageServiceImpl implements ImageService{
 	}
 
 	@Override
-	public List<FilterDto> searchUsername() {
-    List<FilterDto> filterImages = imageDao.searchUserName("", "", "ASC", "mike",10, 1);
+	public List<FilterDto> searchUsername(String searchFor, String sortBy, String direction, String searchTerm) {
+    List<FilterDto> filterImages = imageDao.searchUserName(searchFor, sortBy, direction, searchTerm,10, 1);
 		
 		BufferedImage imagefile = null;
 

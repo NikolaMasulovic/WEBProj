@@ -45,15 +45,15 @@ public interface ImageService {
 	
 	public int searchCategoryCount();
 	
-	public List<FilterDto> searchCategory();
+	public List<FilterDto> searchCategory(String searchFor, String sortBy, String direction, String searchTerm);
 	
 	public int searchKeywordCount();
 	
-	public List<FilterDto> searchKeyword();
+	public List<FilterDto> searchKeyword(String searchFor, String sortBy, String direction, String searchTerm);
 	
 	public int searchUserCount();
 	
-	public List<FilterDto> searchUsername();
+	public List<FilterDto> searchUsername(String searchFor, String sortBy, String direction, String searchTerm);
 	
 	//public int saveTest(List<ImageSaveDto> dtos);
 }

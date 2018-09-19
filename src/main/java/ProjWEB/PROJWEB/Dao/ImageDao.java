@@ -124,7 +124,7 @@ public class ImageDao {
 				long userId = Long.parseLong(rs.getString("userId"));
 				String path = rs.getString("path");
 				int approved = Integer.parseInt(rs.getString("approved"));
-                double rate = Double.parseDouble(rs.getString("rate"));
+				double rate = rs.getDouble("rate");
 				
 				Image img = new Image(id,numOfCopies,datePublished,price,name,place,description,userId,path,approved,rate);
 				list.add(img);
@@ -230,7 +230,7 @@ public class ImageDao {
 				long userId = Long.parseLong(rs.getString("userId"));
 				String path = rs.getString("path");
 				int approved = Integer.parseInt(rs.getString("approved"));
-                double rate = Double.parseDouble(rs.getString("rate"));
+				double rate = rs.getDouble("rate");
 				
 				Image img = new Image(id,numOfCopies,datePublished,price,name,place,description,userId,path,approved,rate);
 				list.add(img);
@@ -271,7 +271,7 @@ public class ImageDao {
 				long userId = Long.parseLong(rs.getString("userId"));
 				String path = rs.getString("path");
 				int approved = Integer.parseInt(rs.getString("approved"));
-				double rate = Double.parseDouble(rs.getString("rate"));
+				double rate = rs.getDouble("rate");
 				
 				Image img = new Image(id,numOfCopies,datePublished,price,name,place,description,userId,path,approved,rate);
 				list.add(img);
