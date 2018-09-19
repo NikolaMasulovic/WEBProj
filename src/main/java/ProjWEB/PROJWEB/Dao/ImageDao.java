@@ -391,114 +391,113 @@ public class ImageDao {
 		
 		return count;
 	}
-//	public int searchUserNameCount(String searchFor, String sortBy, String direction, String searchTerm) {
-//		String sql;
-//		sql="SELECT count(*) AS count\n" + 
-//				"FROM\n" + 
-//				"(SELECT u.id user_id,u.username,u.ocena user_ocena,u.firmaId,p.id photo_id,p.photoName photo_name,p.uploadDate,p.path,p.selledCount,p.price,p.ocena photo_ocena,p.approved,p.deleted\n" + 
-//				"FROM\n" + 
-//				"unsplash2_db.user u\n" + 
-//				"INNER JOIN unsplash2_db.Photo p\n" + 
-//				"ON u.id = p.userId\n" + 
-//				") z\n" + 
-//				"LEFT JOIN unsplash2_db.Firma f\n" + 
-//				"ON f.id = z.firmaId\n" + 
-//				"WHERE deleted = 0 AND approved = 1 AND "+searchFor+" LIKE ?";
-//		loadDB();
-//		PreparedStatement statement;
-//		int count = 0;
-//		try {
-//			statement = conn.prepareStatement(sql);
-//			statement.setString(1, '%'+searchTerm+'%');
-////			statement.setInt(2, b);
-//			
-//			ResultSet resultSet = statement.executeQuery();
-//			if (resultSet.next()) {
-//				count = resultSet.getInt("count");
-//			}
-//			
-//			resultSet.close();
-//			statement.close();
-//			
-//			ConnectionManager.disconnect();
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
-//		return count;
-//	}
-//	
-//	public List<SeptPhotoDto> searchUserName(String searchFor, String sortBy, String direction, String searchTerm,int itemsPerPage, int pagenumber) {
-//		String sql;
-//		sql="SELECT f.id firma_id, f.naziv firma_naziv,f.level firma_nivo,z.user_id,z.username,z.user_ocena,z.firmaId, z.photo_id,z.photo_name,z.uploadDate, z.path, z.selledCount, z.price, z.photo_ocena,z.approved,z.deleted\n" + 
-//				"FROM\n" + 
-//				"(SELECT u.id user_id,u.username,u.ocena user_ocena,u.firmaId,p.id photo_id,p.photoName photo_name,p.uploadDate,p.path,p.selledCount,p.price,p.ocena photo_ocena,p.approved,p.deleted\n" + 
-//				"FROM\n" + 
-//				"unsplash2_db.user u\n" + 
-//				"INNER JOIN unsplash2_db.Photo p\n" + 
-//				"ON u.id = p.userId\n" + 
-//				") z\n" + 
-//				"LEFT JOIN unsplash2_db.Firma f\n" + 
-//				"ON f.id = z.firmaId\n" + 
-//				"WHERE deleted = 0 AND approved = 1 AND "+searchFor+" LIKE ?\n" + 
-//				"ORDER BY CASE WHEN firma_nivo = 'zlatni' THEN '0'\n" + 
-//				"								WHEN user_ocena >= 4.0 AND user_ocena <=5.0 THEN '1'\n" + 
-//				"                                WHEN firma_nivo = 'srebrni' THEN '2'\n" + 
-//				"                                WHEN user_ocena >= 3.0 AND user_ocena <=4.0 THEN '3'\n" + 
-//				"                                WHEN firma_nivo = 'bronzani' THEN '4'\n" + 
-//				"								ELSE "+sortBy+"\n" + 
-//				"							END,"+sortBy+" "+direction+" LIMIT ?,?";
-//		
-//		
-//		loadDB();
-//		int a = (pagenumber - 1) * itemsPerPage;
-//		int b = itemsPerPage;
-//		// ({pagenumber}-1)*{itemsPerPage},{itemsPerPage}
-//		List<SeptPhotoDto> list = new ArrayList<>();
-//		SeptPhotoDto p = null;
-//		PreparedStatement statement;
-//		try {
-//			statement = conn.prepareStatement(sql);
-//			statement.setString(1, '%'+searchTerm+'%');
+	public int searchUserNameCount(String searchFor, String sortBy, String direction, String searchTerm) {
+		String sql;
+		sql="SELECT count(*) AS count\n" + 
+				"				FROM\n" + 
+				"				(SELECT u.id user_id,u.username,u.rate user_ocena,u.companyId,p.id photo_id,p.name photo_name,p.datePublished,p.path,p.numOfCopiesSelled,p.price,p.rate photo_ocena,p.approved App\n" + 
+				"				FROM\n" + 
+				"				webProjDB.user u \n" + 
+				"				INNER JOIN webProjDB.slika p\n" + 
+				"				ON u.id = p.userId\n" + 
+				"				) z\n" + 
+				"				LEFT JOIN webProjDB.company f\n" + 
+				"				ON f.id = z.companyId\n" + 
+				"				WHERE App = 1 AND"+ searchFor +"LIKE ?";
+		loadDB();
+		PreparedStatement statement;
+		int count = 0;
+		try {
+			statement = (PreparedStatement) con.prepareStatement(sql);
+			statement.setString(1, '%'+searchTerm+'%');
+//			statement.setInt(2, b);
+			
+			ResultSet resultSet = statement.executeQuery();
+			if (resultSet.next()) {
+				count = resultSet.getInt("count");
+			}
+			
+			resultSet.close();
+			statement.close();
+			
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return count;
+	}
+	
+	public List<FilterDto> searchUserName(String searchFor, String sortBy, String direction, String searchTerm,int itemsPerPage, int pagenumber) {
+		String sql;
+		sql="SELECT *\n" + 
+				"				FROM\n" + 
+				"				(SELECT u.id user_id,u.username,u.rate user_ocena,u.companyId,p.id photo_id,p.name photo_name,p.datePublished,p.path,p.numOfCopiesSelled,p.price,p.rate photo_ocena,p.approved App\n" + 
+				"				FROM\n" + 
+				"				webProjDB.user u \n" + 
+				"				INNER JOIN webProjDB.slika p\n" + 
+				"				ON u.id = p.userId\n" + 
+				"				) z\n" + 
+				"				LEFT JOIN webProjDB.company f\n" + 
+				"				ON f.id = z.companyId\n" + 
+				"				WHERE App = 1 AND username LIKE ?" + 
+				"                ORDER BY CASE WHEN partnerStatus = 2 THEN '0'\n" + 
+				"												WHEN user_ocena >= 4.0 AND user_ocena <=5.0 THEN '1'\n" + 
+				"				                                WHEN partnerStatus = 1 THEN '2'\n" + 
+				"				                                WHEN user_ocena >= 3.0 AND user_ocena <=4.0 THEN '3'\n" + 
+				"				                                WHEN partnerStatus = 0 THEN '4' \n" + 
+				"												ELSE user_ocena\n" + 
+				"											    END, user_ocena "+direction+" LIMIT 0,10;";
+		
+		
+		loadDB();
+		int a = (pagenumber - 1) * itemsPerPage;
+		int b = itemsPerPage;
+		// ({pagenumber}-1)*{itemsPerPage},{itemsPerPage}
+		List<FilterDto> list = new ArrayList<>();
+		FilterDto p = null;
+		PreparedStatement statement;
+		try {
+			statement = (PreparedStatement) con.prepareStatement(sql);
+			statement.setString(1, '%'+searchTerm+'%');
 //			statement.setInt(2, a);
 //			statement.setInt(3, b);
-//			ResultSet resultSet = statement.executeQuery();
-//			String executedQuery = resultSet.getStatement().toString();
-//			System.out.println(executedQuery);
-//			while (resultSet.next()) {
-//				long firmaId = resultSet.getInt("firma_id");
-//				String firmaNaziv = resultSet.getString("firma_naziv");
-//				String firmaNivo = resultSet.getString("firma_nivo");
-//				long userId = resultSet.getInt("user_id");
-//				String username = resultSet.getString("username");
-//				double userOcena = resultSet.getDouble("user_ocena");
-//				long photoId = resultSet.getInt("photo_id");
-//				String photoName = resultSet.getString("photo_name");
-//				String uploadDate = resultSet.getString("uploadDate");
-//				String path = resultSet.getString("path");
-//				int selledCount = resultSet.getInt("selledCount");
-//				double price = resultSet.getDouble("price");
-//				double photoOcena = resultSet.getDouble("photo_ocena");
-//				int approved = resultSet.getInt("approved");
-//				int deleted = resultSet.getInt("deleted");
-//				p = new SeptPhotoDto(firmaId,firmaNaziv,firmaNivo,userId,username,userOcena,photoId,photoName,uploadDate,path,selledCount,price,photoOcena,approved,deleted);
-//				System.out.println(p);
-//				list.add(p);
-//			}
-//
-//			resultSet.close();
-//			statement.close();
-//
-//			ConnectionManager.disconnect();
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		return list;
-//		
-//	}
-//	
+			ResultSet resultSet = statement.executeQuery();
+			String executedQuery = resultSet.getStatement().toString();
+			System.out.println(executedQuery);
+			while (resultSet.next()) {
+				long firmaId = resultSet.getInt("companyId");
+				String firmaNaziv = resultSet.getString("name");
+				String firmaNivo = resultSet.getString("partnerStatus");
+				long userId = resultSet.getInt("user_id");
+				String username = resultSet.getString("username");
+				double userOcena = resultSet.getDouble("user_ocena");
+				long photoId = resultSet.getInt("photo_id");
+				String photoName = resultSet.getString("photo_name");
+				String uploadDate = resultSet.getString("datePublished");
+				String path = resultSet.getString("path");
+				int selledCount = resultSet.getInt("numOfCopiesSelled");
+				double price = resultSet.getDouble("price");
+				double photoOcena = resultSet.getDouble("photo_ocena");
+				int approved = resultSet.getInt("App");
+				p = new FilterDto(firmaId,firmaNaziv,firmaNivo,userId,username,userOcena,photoId,photoName,uploadDate,path,selledCount,price,photoOcena,approved,0);
+				System.out.println(p);
+				list.add(p);
+			}
+
+			resultSet.close();
+			statement.close();
+
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
+		
+	}
+	
 	public List<FilterDto> searchKeyword(String searchFor, String sortBy, String direction, String searchTerm,int itemsPerPage, int pagenumber) {
 		String sql;
 		sql="SELECT * " + 

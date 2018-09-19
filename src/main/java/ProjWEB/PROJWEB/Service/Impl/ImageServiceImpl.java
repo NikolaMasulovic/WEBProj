@@ -445,5 +445,30 @@ public class ImageServiceImpl implements ImageService{
 		}
 		return filterImages;
 	}
+
+	@Override
+	public int searchUserCount() {
+		return imageDao.searchKeywordCount("username", "", "", "mike");
+	}
+
+	@Override
+	public List<FilterDto> searchUsername() {
+    List<FilterDto> filterImages = imageDao.searchUserName("", "", "ASC", "mike",10, 1);
+		
+		BufferedImage imagefile = null;
+
+		for (FilterDto filterDto : filterImages) {
+			try {
+				imagefile = ImageIO.read(new File(filterDto.getPath()));
+			} catch (IOException e) {
+				System.out.println("GETTING IMAGE FROM FILE ERROR::ID "+filterDto.getPhotoId());
+				e.printStackTrace();
+				continue;
+			}
+			String url64 = "data:image/jpeg;base64,"+ImageUtils.base64FromImage(imagefile);
+			filterDto.setBase64(url64);
+		}
+		return filterImages;
+	}
 	
 }

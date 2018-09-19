@@ -92,6 +92,20 @@ public class ImageApi {
 		return imageService.searchKeywordCount();
 	}
 	
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	@Path("/usernameFilterCount")
+	public int usernameFilterCount() throws SQLException {
+		return imageService.searchUserCount();
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/usernameFilter")
+	public List<FilterDto> usernameFilter() throws SQLException {
+		return imageService.searchUsername();
+	}
+	
 	/*
 	 * RESOLUTIONS
 	 */
